@@ -1,0 +1,18 @@
+{
+  "submission_id": "form_sub_9847120",
+  "form_name": "contact_sales_footer",
+  "client_ip": "171.96.120.45",
+  "timestamp": 1790330400,
+  "fields": {
+    "full_name": "Somchai Prasert",
+    "work_email": "somchai.p@bangkokbites.co.th",
+    "contact_number": "081-234-5678",
+    "company_title": "Bangkok Bites Restaurant Group",
+    "inquiry_text": "We operate 5 branches of Thai fusion restaurants in Bangkok. Our staff is overwhelmed answering repetitive customer questions on LINE OA regarding branch hours, reservations, and promotions. We want to implement an automated LINE AI customer service bot within the next 4 weeks. Budget is approved around 80,000 THB."
+  },
+  "tracking": {
+    "source": "google_ads",
+    "campaign": "line_bot_bkk_2026",
+    "landing_url": "https://example.com/solutions/line-crm"
+  }
+}

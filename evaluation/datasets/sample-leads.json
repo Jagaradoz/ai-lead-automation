@@ -1,0 +1,222 @@
+[
+  {
+    "lead_id": "lead_eval_001",
+    "source": "website",
+    "external_id": "web_lead_1001",
+    "contact": {
+      "name": "Dr. Sarah Jenkins",
+      "email": "sarah.jenkins@smilecraftdental.com",
+      "phone": "+1-415-555-0192"
+    },
+    "company": {
+      "name": "SmileCraft Dental Group",
+      "website": "https://smilecraftdental.com",
+      "size": "11-50"
+    },
+    "message": "We operate three dental clinics in the Bay Area. We are struggling with patient scheduling follow-ups and missed appointments. We need an automated SMS and WhatsApp lead intake and appointment reminder system integrated directly into our CRM. Our budget is approved up to $15,000 USD (approx 500,000 THB) and we need to launch within 30 days.",
+    "received_at": "2026-09-25T08:15:00Z",
+    "metadata": {
+      "category_tag": "strong_english_smb",
+      "utm_source": "google_search",
+      "landing_page": "https://example.com/solutions/healthcare-intake"
+    }
+  },
+  {
+    "lead_id": "lead_eval_002",
+    "source": "line",
+    "external_id": "U789abcdef0123456789abcdef012345",
+    "contact": {
+      "name": "คุณวิชัย กิตติวงศ์",
+      "email": "wichai.k@siamtaste.co.th",
+      "phone": "089-123-4567"
+    },
+    "company": {
+      "name": "Siam Taste Restaurant Group",
+      "website": null,
+      "size": "11-50"
+    },
+    "message": "สวัสดีครับ ทางเรามีร้านอาหาร 3 สาขา ตอนนี้แอดมินตอบแชท LINE OA ไม่ทัน ลูกค้าถามเรื่องเมนู จองโต๊ะ และโปรโมชั่นเยอะมาก อยากทำระบบ LINE AI ตอบคำถามและรับจองอัตโนมัติ งบประมาณที่ตั้งไว้ประมาณ 120,000 บาท ต้องการเริ่มใช้งานภายใน 4 สัปดาห์ครับ",
+    "received_at": "2026-09-25T09:30:00Z",
+    "metadata": {
+      "category_tag": "strong_thai_smb",
+      "utm_source": "line_oa_qr",
+      "landing_page": null
+    }
+  },
+  {
+    "lead_id": "lead_eval_003",
+    "source": "website",
+    "external_id": "web_lead_1003",
+    "contact": {
+      "name": "Tom",
+      "email": "tom9921@freemail.org",
+      "phone": null
+    },
+    "company": {
+      "name": null,
+      "website": null,
+      "size": null
+    },
+    "message": "Hey do you guys do AI stuff? Just curious how much it usually costs.",
+    "received_at": "2026-09-25T10:05:00Z",
+    "metadata": {
+      "category_tag": "weak_enquiry",
+      "utm_source": "direct",
+      "landing_page": "https://example.com/"
+    }
+  },
+  {
+    "lead_id": "lead_eval_004",
+    "source": "website",
+    "external_id": "web_lead_1004",
+    "contact": {
+      "name": "Elena Rostova",
+      "email": "elena@urbanthreads.store",
+      "phone": "+44-20-7946-0912"
+    },
+    "company": {
+      "name": "Urban Threads Apparel",
+      "website": "https://urbanthreads.store",
+      "size": "1-10"
+    },
+    "message": "We run an active Shopify fashion brand. We urgently need a two-way sync between Shopify order refunds, customer complaints, and HubSpot tickets so our support agents stop dropping tickets. We need this live within 14 days before our winter campaign starts. Please contact me with pricing.",
+    "received_at": "2026-09-25T11:20:00Z",
+    "metadata": {
+      "category_tag": "missing_budget",
+      "utm_source": "linkedin_ad",
+      "landing_page": "https://example.com/integrations/hubspot-shopify"
+    }
+  },
+  {
+    "lead_id": "lead_eval_005",
+    "source": "facebook",
+    "external_id": "fb_leadgen_55489102",
+    "contact": {
+      "name": "กานดา สุวรรณเมธี",
+      "email": "kanda.boutique@gmail.com",
+      "phone": "086-987-6543"
+    },
+    "company": {
+      "name": "Phuket Serenity Villa & Resort",
+      "website": null,
+      "size": "1-10"
+    },
+    "message": "สนใจระบบ AI แชทบอทตอบคำถามลูกค้าภาษาอังกฤษและจีนสำหรับรีสอร์ตที่ภูเก็ตค่ะ งบประมาณตั้งไว้ราวๆ 50,000 บาท ส่วนเรื่องเวลาเริ่มโปรเจกต์ยังไม่ได้รีบด่วนค่ะ เมื่อไหร่ก็ได้ตามความพร้อมของทีมงานค่ะ",
+    "received_at": "2026-09-25T11:55:00Z",
+    "metadata": {
+      "category_tag": "missing_timeline",
+      "utm_source": "facebook_ad",
+      "landing_page": "https://facebook.com/leadgen/form/55489102"
+    }
+  },
+  {
+    "lead_id": "lead_eval_006",
+    "source": "website",
+    "external_id": "web_lead_1006",
+    "contact": {
+      "name": "Robert Henderson",
+      "email": "rhenderson@hendersonlogistics.com",
+      "phone": "+1-312-555-0144"
+    },
+    "company": {
+      "name": "Henderson Logistics Depot",
+      "website": null,
+      "size": "11-50"
+    },
+    "message": "Our Dell PowerEdge server in the warehouse suddenly won't power on today and the monitor stays completely black. We suspect a blown power supply unit or motherboard failure. Can you dispatch a technician to repair the physical hardware at our Chicago site this afternoon?",
+    "received_at": "2026-09-25T12:10:00Z",
+    "metadata": {
+      "category_tag": "irrelevant_service",
+      "utm_source": "google_search",
+      "landing_page": "https://example.com/contact"
+    }
+  },
+  {
+    "lead_id": "lead_eval_007",
+    "source": "website",
+    "external_id": "web_lead_1007",
+    "contact": {
+      "name": "SEO Specialist Kevin",
+      "email": "sales@fastrank-seo-boost.top",
+      "phone": null
+    },
+    "company": {
+      "name": "RankFast Media",
+      "website": "https://fastrank-seo-boost.top",
+      "size": null
+    },
+    "message": "GUARANTEED #1 RANKING ON GOOGLE IN 14 DAYS! Buy 10,000 permanent high DA backlinks for only $49. Boost your website traffic 10x! Special discount valid today only. Click here: https://fastrank-seo-boost.top/offer",
+    "received_at": "2026-09-25T12:35:00Z",
+    "metadata": {
+      "category_tag": "spam",
+      "utm_source": "bot_submission",
+      "landing_page": "https://example.com/contact"
+    }
+  },
+  {
+    "lead_id": "lead_eval_008",
+    "source": "website",
+    "external_id": "web_lead_1008",
+    "contact": {
+      "name": "Marcus Vance",
+      "email": "m.vance@apexfinancial.com",
+      "phone": "+1-212-555-0188"
+    },
+    "company": {
+      "name": "Apex Global Financial Services",
+      "website": "https://apexfinancial.com",
+      "size": "50+"
+    },
+    "message": "We are seeking an automation partner to modernize our inbound institutional onboarding pipeline. We currently receive 400+ complex loan and advisory enquiries daily across web portals, encrypted email, and partner APIs. We need enterprise-grade data normalization, automated compliance screening, CRM routing into HubSpot Enterprise, and strict audit logging. We have an allocated project budget of $45,000 USD (approx 1,500,000 THB) for Phase 1. We require vendor RFP responses by October 15th.",
+    "received_at": "2026-09-25T13:00:00Z",
+    "metadata": {
+      "category_tag": "enterprise_enquiry",
+      "utm_source": "referral_partner",
+      "landing_page": "https://example.com/enterprise"
+    }
+  },
+  {
+    "lead_id": "lead_eval_009",
+    "source": "website",
+    "external_id": "web_lead_1009",
+    "contact": {
+      "name": "Dave Miller",
+      "email": "dave@ironpulse-fitness.com",
+      "phone": "+1-512-555-0177"
+    },
+    "company": {
+      "name": "IronPulse Community Gym",
+      "website": "https://ironpulse-fitness.com",
+      "size": "1-10"
+    },
+    "message": "I'm a solo gym owner. Looking for a simple way to take new member signup forms from my website and automatically add them to a Google Sheet and send a welcome WhatsApp message. My budget is tight, around 15,000 THB ($400). Can this be done affordably within a couple weeks?",
+    "received_at": "2026-09-25T13:15:00Z",
+    "metadata": {
+      "category_tag": "small_business_smb",
+      "utm_source": "youtube_tutorial",
+      "landing_page": "https://example.com/automation-examples"
+    }
+  },
+  {
+    "lead_id": "lead_eval_010",
+    "source": "line",
+    "external_id": "U11223344556677889900aabbccddeeff",
+    "contact": {
+      "name": "สมบัติ",
+      "email": null,
+      "phone": null
+    },
+    "company": {
+      "name": null,
+      "website": null,
+      "size": null
+    },
+    "message": "สนใจ ขอรายละเอียดหน่อยครับ",
+    "received_at": "2026-09-25T13:20:00Z",
+    "metadata": {
+      "category_tag": "ambiguous_enquiry",
+      "utm_source": "line_search",
+      "landing_page": null
+    }
+  }
+]

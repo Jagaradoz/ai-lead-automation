@@ -1,0 +1,171 @@
+{
+  "version": "1.0",
+  "description": "Deterministic Lead Scoring Configuration Rules and Weighting System",
+  "priority_thresholds": {
+    "high": 75,
+    "medium": 45,
+    "low": 20,
+    "disqualified": 0
+  },
+  "dimensions": {
+    "service_fit": {
+      "max_points": 25,
+      "rules": [
+        {
+          "match_type": "exact_core_offering",
+          "services": ["LINE AI customer service", "CRM workflow automation", "lead qualification bot"],
+          "points": 25,
+          "reason": "Direct match for core automation offerings."
+        },
+        {
+          "match_type": "adjacent_offering",
+          "services": ["website chatbot", "custom API integration", "data pipeline"],
+          "points": 15,
+          "reason": "Adjacent service supported with custom scoping."
+        },
+        {
+          "match_type": "unsupported_or_ambiguous",
+          "services": ["hardware repair", "mobile app development", "SEO audit"],
+          "points": 0,
+          "reason": "Out of scope or unsupported domain."
+        }
+      ]
+    },
+    "budget_fit": {
+      "max_points": 20,
+      "rules": [
+        {
+          "condition": "budget_stated_and_meets_target",
+          "min_amount_thb": 100000,
+          "points": 20,
+          "reason": "Stated budget meets or exceeds enterprise/mid-market tier (>= 100k THB)."
+        },
+        {
+          "condition": "budget_stated_starter",
+          "min_amount_thb": 40000,
+          "points": 15,
+          "reason": "Stated budget fits starter/SMB automation package (40k - 99k THB)."
+        },
+        {
+          "condition": "budget_below_minimum",
+          "min_amount_thb": 0,
+          "points": 5,
+          "reason": "Stated budget is below standard minimum engagement threshold."
+        },
+        {
+          "condition": "budget_unspecified",
+          "points": 10,
+          "reason": "Budget not explicitly stated; awarded neutral baseline points."
+        }
+      ]
+    },
+    "urgency": {
+      "max_points": 20,
+      "rules": [
+        {
+          "condition": "timeline_under_30_days",
+          "max_days": 30,
+          "points": 20,
+          "reason": "High urgency: prospect requires deployment within 30 days."
+        },
+        {
+          "condition": "timeline_30_to_90_days",
+          "max_days": 90,
+          "points": 12,
+          "reason": "Medium urgency: prospect has a quarterly horizon (30-90 days)."
+        },
+        {
+          "condition": "timeline_over_90_days_or_unspecified",
+          "points": 5,
+          "reason": "Low urgency: exploratory or timeline unspecified."
+        }
+      ]
+    },
+    "purchase_intent": {
+      "max_points": 20,
+      "rules": [
+        {
+          "intent_level": "high",
+          "points": 20,
+          "reason": "Strong buying signals: clear pain points, concrete use case, ready to discuss."
+        },
+        {
+          "intent_level": "medium",
+          "points": 10,
+          "reason": "Moderate interest: general inquiry seeking options and pricing."
+        },
+        {
+          "intent_level": "low",
+          "points": 0,
+          "reason": "Low purchase intent: student research or casual question."
+        },
+        {
+          "intent_level": "spam",
+          "points": 0,
+          "reason": "Commercial spam or promotional solicitation."
+        }
+      ]
+    },
+    "decision_authority": {
+      "max_points": 5,
+      "rules": [
+        {
+          "condition": "c_level_or_owner",
+          "points": 5,
+          "reason": "Contact indicated founder, director, or executive authority."
+        },
+        {
+          "condition": "unknown_authority",
+          "points": 0,
+          "reason": "Authority level not stated in initial contact form."
+        }
+      ]
+    },
+    "company_fit": {
+      "max_points": 5,
+      "rules": [
+        {
+          "condition": "target_vertical_and_size",
+          "points": 5,
+          "reason": "Operates in prime target vertical (healthcare, restaurant chains, ecommerce)."
+        },
+        {
+          "condition": "unknown_company",
+          "points": 0,
+          "reason": "No company information provided."
+        }
+      ]
+    },
+    "data_completeness": {
+      "max_points": 5,
+      "rules": [
+        {
+          "condition": "full_contact_and_company",
+          "points": 5,
+          "reason": "Both email, phone, and company name provided."
+        },
+        {
+          "condition": "basic_contact_only",
+          "points": 3,
+          "reason": "Only email or phone provided without company details."
+        }
+      ]
+    }
+  },
+  "human_review_triggers": {
+    "low_ai_confidence": {
+      "threshold": 0.65,
+      "description": "Trigger review if AI extraction confidence is below 0.65."
+    },
+    "large_opportunity_budget_thb": {
+      "threshold": 300000,
+      "description": "Flag for senior account executive review if budget >= 300k THB."
+    },
+    "unsupported_service_with_high_intent": {
+      "description": "Flag for review if client has high intent but requested service is outside standard catalog."
+    },
+    "spam_or_inappropriate": {
+      "description": "Flag to prevent automated outbound messaging to suspected spam leads."
+    }
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LeadAnalysis",
+  "description": "Structured facts and contextual insights extracted from unstructured lead message by AI.",
+  "type": "object",
+  "required": [
+    "industry",
+    "service_requested",
+    "problem",
+    "budget",
+    "timeline_days",
+    "intent",
+    "language",
+    "summary",
+    "missing_information",
+    "confidence_score"
+  ],
+  "properties": {
+    "industry": {
+      "type": ["string", "null"],
+      "description": "Detected industry vertical of the lead (e.g., 'restaurant', 'healthcare', 'ecommerce', 'manufacturing')."
+    },
+    "service_requested": {
+      "type": ["string", "null"],
+      "description": "Specific capability or service the prospect is asking for (e.g., 'LINE AI customer service', 'CRM automation', 'custom integration')."
+    },
+    "problem": {
+      "type": ["string", "null"],
+      "description": "Core business problem or operational bottleneck described by the prospect."
+    },
+    "budget": {
+      "type": "object",
+      "description": "Explicit or stated budget range extracted from the message.",
+      "required": ["amount", "currency", "stated"],
+      "properties": {
+        "amount": {
+          "type": ["number", "null"],
+          "description": "Numeric budget amount if explicitly mentioned."
+        },
+        "currency": {
+          "type": ["string", "null"],
+          "description": "ISO currency code if specified (e.g., 'THB', 'USD')."
+        },
+        "stated": {
+          "type": "boolean",
+          "description": "True if budget was explicitly stated, false if absent or ambiguous."
+        }
+      },
+      "additionalProperties": false
+    },
+    "timeline_days": {
+      "type": ["integer", "null"],
+      "description": "Estimated implementation timeline requested in days (e.g., within 30 days = 30, urgent/asap = 7, null if unspecified)."
+    },
+    "intent": {
+      "type": "string",
+      "description": "Stated commercial readiness level inferred strictly from message semantics.",
+      "enum": [
+        "high",
+        "medium",
+        "low",
+        "spam",
+        "ambiguous"
+      ]
+    },
+    "language": {
+      "type": "string",
+      "description": "Primary language of the enquiry message (e.g., 'th', 'en')."
+    },
+    "summary": {
+      "type": "string",
+      "description": "Concise, factual 1-2 sentence executive summary of the lead enquiry."
+    },
+    "missing_information": {
+      "type": "array",
+      "description": "Key business qualification attributes not provided in the enquiry.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "confidence_score": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "description": "AI model self-assessed extraction confidence based on text clarity and completeness."
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,20 @@
+{
+  "industry": "restaurant",
+  "service_requested": "LINE AI customer service",
+  "problem": "High volume of repetitive customer enquiries regarding branch hours, reservations, and promotions overwhelming staff across 5 locations.",
+  "budget": {
+    "amount": 80000,
+    "currency": "THB",
+    "stated": true
+  },
+  "timeline_days": 28,
+  "intent": "high",
+  "language": "en",
+  "summary": "Multi-location restaurant group seeks LINE AI customer service automation within 4 weeks to resolve repetitive inquiries. Budget approved at 80,000 THB.",
+  "missing_information": [
+    "company_website",
+    "decision_maker_role",
+    "current_pos_or_crm_system"
+  ],
+  "confidence_score": 0.94
+}

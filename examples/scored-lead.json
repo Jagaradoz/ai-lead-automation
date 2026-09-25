@@ -1,0 +1,61 @@
+{
+  "lead_id": "lead_20260925_001",
+  "total_score": 90,
+  "priority": "high",
+  "score_breakdown": {
+    "service_fit": 25,
+    "purchase_intent": 20,
+    "urgency": 20,
+    "budget_fit": 15,
+    "decision_authority": 0,
+    "company_fit": 5,
+    "data_completeness": 5
+  },
+  "explanations": [
+    {
+      "dimension": "service_fit",
+      "points_awarded": 25,
+      "max_possible": 25,
+      "reason": "Direct match for core automation offerings ('LINE AI customer service')."
+    },
+    {
+      "dimension": "purchase_intent",
+      "points_awarded": 20,
+      "max_possible": 20,
+      "reason": "High intent: stated concrete problem, approved budget, and explicit implementation target."
+    },
+    {
+      "dimension": "urgency",
+      "points_awarded": 20,
+      "max_possible": 20,
+      "reason": "High urgency: requested implementation timeframe is 28 days (under 30-day threshold)."
+    },
+    {
+      "dimension": "budget_fit",
+      "points_awarded": 15,
+      "max_possible": 20,
+      "reason": "Stated budget of 80,000 THB fits starter/SMB multi-branch package."
+    },
+    {
+      "dimension": "decision_authority",
+      "points_awarded": 0,
+      "max_possible": 5,
+      "reason": "Authority level or job title was not specified in the submission."
+    },
+    {
+      "dimension": "company_fit",
+      "points_awarded": 5,
+      "max_possible": 5,
+      "reason": "Restaurant chain vertical with multiple locations matches target customer profile."
+    },
+    {
+      "dimension": "data_completeness",
+      "points_awarded": 5,
+      "max_possible": 5,
+      "reason": "Complete contact details provided including valid email, phone number, and company name."
+    }
+  ],
+  "requires_human_review": false,
+  "human_review_reasons": [],
+  "scored_at": "2026-09-25T10:00:04Z"
+}

@@ -1,0 +1,99 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CanonicalLead",
+  "description": "Canonical normalized representation of an incoming lead across all acquisition channels.",
+  "type": "object",
+  "required": [
+    "lead_id",
+    "source",
+    "contact",
+    "message",
+    "received_at"
+  ],
+  "properties": {
+    "lead_id": {
+      "type": "string",
+      "description": "Unique internal identifier for the lead within the automation pipeline."
+    },
+    "source": {
+      "type": "string",
+      "description": "The acquisition channel where the lead originated.",
+      "enum": [
+        "website",
+        "facebook",
+        "line",
+        "email",
+        "api",
+        "test"
+      ]
+    },
+    "external_id": {
+      "type": ["string", "null"],
+      "description": "Platform-specific ID from the originating channel (e.g., Facebook leadgen_id, LINE userId)."
+    },
+    "contact": {
+      "type": "object",
+      "description": "Contact information for the individual submitter.",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Full name or display name of the contact."
+        },
+        "email": {
+          "type": ["string", "null"],
+          "format": "email",
+          "description": "Contact email address."
+        },
+        "phone": {
+          "type": ["string", "null"],
+          "description": "Contact phone number (international or national standard)."
+        }
+      },
+      "additionalProperties": false
+    },
+    "company": {
+      "type": "object",
+      "description": "Organization information if provided.",
+      "properties": {
+        "name": {
+          "type": ["string", "null"],
+          "description": "Company or business name."
+        },
+        "website": {
+          "type": ["string", "null"],
+          "description": "Company website URL."
+        },
+        "size": {
+          "type": ["string", "null"],
+          "description": "Self-reported company size band (e.g., 1-10, 11-50, 50+)."
+        }
+      },
+      "additionalProperties": false
+    },
+    "message": {
+      "type": "string",
+      "description": "Raw unstructured enquiry or message content submitted by the customer."
+    },
+    "received_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 UTC timestamp indicating when the lead was received."
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Optional channel-specific or tracking metadata (e.g., UTM parameters, page URL).",
+      "properties": {
+        "utm_source": { "type": ["string", "null"] },
+        "utm_medium": { "type": ["string", "null"] },
+        "utm_campaign": { "type": ["string", "null"] },
+        "landing_page": { "type": ["string", "null"] },
+        "ip_address": { "type": ["string", "null"] }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

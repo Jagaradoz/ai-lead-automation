@@ -1,0 +1,93 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LeadScoreResult",
+  "description": "Deterministic scoring calculation result with granular dimensional breakdowns, priority, and human review flags.",
+  "type": "object",
+  "required": [
+    "lead_id",
+    "total_score",
+    "priority",
+    "score_breakdown",
+    "explanations",
+    "requires_human_review",
+    "human_review_reasons",
+    "scored_at"
+  ],
+  "properties": {
+    "lead_id": {
+      "type": "string",
+      "description": "Unique identifier of the lead that was scored."
+    },
+    "total_score": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Composite deterministic score (0-100) calculated by rule engine."
+    },
+    "priority": {
+      "type": "string",
+      "enum": [
+        "high",
+        "medium",
+        "low",
+        "disqualified"
+      ],
+      "description": "Actionable priority bracket mapped from total_score thresholds."
+    },
+    "score_breakdown": {
+      "type": "object",
+      "description": "Dimensional score breakdown. Points awarded per configurable dimension.",
+      "required": [
+        "service_fit",
+        "purchase_intent",
+        "urgency",
+        "budget_fit",
+        "decision_authority",
+        "company_fit",
+        "data_completeness"
+      ],
+      "properties": {
+        "service_fit": { "type": "integer", "minimum": 0, "maximum": 30 },
+        "purchase_intent": { "type": "integer", "minimum": 0, "maximum": 25 },
+        "urgency": { "type": "integer", "minimum": 0, "maximum": 20 },
+        "budget_fit": { "type": "integer", "minimum": 0, "maximum": 25 },
+        "decision_authority": { "type": "integer", "minimum": 0, "maximum": 15 },
+        "company_fit": { "type": "integer", "minimum": 0, "maximum": 15 },
+        "data_completeness": { "type": "integer", "minimum": 0, "maximum": 10 }
+      },
+      "additionalProperties": false
+    },
+    "explanations": {
+      "type": "array",
+      "description": "Human-readable justifications for every dimensional score granted or deducted.",
+      "items": {
+        "type": "object",
+        "required": ["dimension", "points_awarded", "reason"],
+        "properties": {
+          "dimension": { "type": "string" },
+          "points_awarded": { "type": "integer" },
+          "max_possible": { "type": "integer" },
+          "reason": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "requires_human_review": {
+      "type": "boolean",
+      "description": "True if rules or AI edge conditions require manual human intervention before sales action."
+    },
+    "human_review_reasons": {
+      "type": "array",
+      "description": "Specific trigger conditions that flagged this lead for manual inspection.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "scored_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 UTC timestamp of scoring calculation."
+    }
+  },
+  "additionalProperties": false
+}
