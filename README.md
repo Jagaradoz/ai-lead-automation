@@ -1,9 +1,11 @@
 # AI Lead Automation
 
-[![Status: Early Development](https://img.shields.io/badge/Status-Early%20Development%20%2F%20Infrastructure%20Phase-blue.svg)](#current-status)
+[![Status: MVP Live](https://img.shields.io/badge/Status-MVP%20Live%20%2F%20Interactive%20Demo-emerald.svg)](#current-status)
 [![Architecture: Channel--Independent](https://img.shields.io/badge/Architecture-Channel--Independent-orange.svg)](docs/architecture.md)
+[![Tests: Passing](https://img.shields.io/badge/Tests-14%2F14%20Passing-brightgreen.svg)](tests/)
 
 > **Portfolio Project**: A demonstration of multi-channel lead intake, AI-assisted factual extraction, explainable deterministic lead scoring, and automated CRM orchestration.
+
 
 ---
 
@@ -206,18 +208,32 @@ To understand how data flows through the system, inspect the step-by-step exampl
 
 ## 11. Getting Started & Verification
 
+### 1. Launch the Live Interactive Demo Dashboard (Simplest)
+Start the entire app with a single command:
+
 ```bash
-# Clone the repository
-git clone https://github.com/your-username/ai-lead-automation.git
-cd ai-lead-automation
-
-# Copy environment configuration
-cp .env.example .env
-
-# Explore schemas and sample leads
-cat schemas/lead.schema.json
-cat evaluation/datasets/sample-leads.json
+python main.py
 ```
+*(On Windows, you can also simply run `.\run.bat` or double-click `run.bat`)*
+
+Then open **`http://localhost:8000`** in your browser to:
+- Test 1-click lead presets (Healthcare SMB, Thai Restaurant, Urgent Shopify, Enterprise RFP, Spam, Hardware Out-of-Scope).
+- Submit custom multi-lingual inquiries (English/Thai) across Website, LINE OA, or Facebook channels.
+- Inspect real-time canonical normalization, AI fact extraction, 7-dimension score breakdowns, and HubSpot/Slack dispatch previews.
+
+### 2. Run Automated Quality & Integrity Suites
+
+```bash
+# 1. Run all unit and API integration tests
+python main.py --test
+
+# 2. Verify all Draft-07 JSON schemas, configurations, and datasets
+python main.py --val
+
+# 3. Execute the 10-lead ground-truth evaluation benchmark
+python main.py --eval
+```
+
 
 ---
 

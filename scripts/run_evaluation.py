@@ -20,12 +20,17 @@ if hasattr(sys.stdout, "reconfigure"):
     except Exception:
         pass
 
-from jsonschema import validate
+ROOT_DIR = Path(__file__).resolve().parent.parent
+SCRIPTS_DIR = Path(__file__).resolve().parent
+if str(SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS_DIR))
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
 
+from jsonschema import validate
 from ai_extractor import analyze_lead, load_analysis_schema
 from scoring_engine import score_lead
 
-ROOT_DIR = Path(__file__).resolve().parent.parent
 DATASET_PATH = ROOT_DIR / "evaluation" / "datasets" / "sample-leads.json"
 GROUND_TRUTH_PATH = ROOT_DIR / "evaluation" / "expected" / "ground-truth.json"
 REPORTS_DIR = ROOT_DIR / "evaluation" / "reports"

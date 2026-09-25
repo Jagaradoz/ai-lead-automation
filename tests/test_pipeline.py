@@ -121,3 +121,19 @@ def test_all_10_sample_leads_schema_compliance(sample_leads, schemas):
 
         assert 0 <= score_res["total_score"] <= 100
         assert score_res["priority"] in ["high", "medium", "low", "disqualified"]
+
+
+def test_normalizer_keeps_flat_ui_payload_fields():
+    payload = {
+        "source": "website",
+        "contact": {"name": "Dr. Sarah Jenkins", "email": "sarah@smilecraft.com", "phone": "+1-415-555-0192"},
+        "company": {"name": "SmileCraft Dental Group"},
+        "message": "We operate three dental clinics and need appointment reminder automation.",
+    }
+
+    lead = normalize_lead(payload)
+
+    assert lead["contact"]["name"] == "Dr. Sarah Jenkins"
+    assert lead["contact"]["email"] == "sarah@smilecraft.com"
+    assert lead["company"]["name"] == "SmileCraft Dental Group"
+    assert lead["message"] == payload["message"]

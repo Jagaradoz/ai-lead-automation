@@ -28,12 +28,27 @@ def generate_lead_id() -> str:
     return f"lead_{today}_{short_uuid}"
 
 
+def _fields_from_canonical_shape(payload: Dict[str, Any]) -> Dict[str, Any]:
+    """Maps a flat {contact, company, message} payload (e.g. the demo UI form) to website form fields."""
+    contact = payload.get("contact") or {}
+    company = payload.get("company") or {}
+    return {
+        "name": contact.get("name"),
+        "email": contact.get("email"),
+        "phone": contact.get("phone"),
+        "company_name": company.get("name"),
+        "website": company.get("website"),
+        "company_size": company.get("size"),
+        "message": payload.get("message"),
+    }
+
+
 def normalize_website_payload(payload: Dict[str, Any]) -> Dict[str, Any]:
     """
     Transforms website form submissions (e.g., examples/incoming-lead.json)
     into a Canonical Lead.
     """
-    fields = payload.get("fields", {})
+    fields = payload.get("fields") or _fields_from_canonical_shape(payload)
     tracking = payload.get("tracking", {})
     timestamp = payload.get("timestamp")
 
