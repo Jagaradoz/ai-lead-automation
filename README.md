@@ -1,7 +1,6 @@
 # AI Lead Automation
 
 [![Status: Early Development](https://img.shields.io/badge/Status-Early%20Development%20%2F%20Infrastructure%20Phase-blue.svg)](#current-status)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Architecture: Channel--Independent](https://img.shields.io/badge/Architecture-Channel--Independent-orange.svg)](docs/architecture.md)
 
 > **Portfolio Project**: A demonstration of multi-channel lead intake, AI-assisted factual extraction, explainable deterministic lead scoring, and automated CRM orchestration.
@@ -143,7 +142,6 @@ To maintain absolute transparency, the table below distinguishes between **curre
 ```text
 ai-lead-automation/
 ├── README.md                           # Main portfolio overview and architecture
-├── LICENSE                             # MIT License
 ├── .gitignore                          # Git hygiene for Node, Python, and secrets
 ├── .env.example                        # Template for required environment variables
 │
@@ -223,6 +221,6 @@ cat evaluation/datasets/sample-leads.json
 
 ---
 
-## 12. License
+## 12. Copyright & Intellectual Property
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Copyright &copy; 2026 Jagaradoz. All rights reserved.
