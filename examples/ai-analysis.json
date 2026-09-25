@@ -1,7 +1,12 @@
 {
   "industry": "restaurant",
   "service_requested": "LINE AI customer service",
+  "service_match": {
+    "offering": "LINE AI customer service",
+    "tier": "core"
+  },
   "problem": "High volume of repetitive customer enquiries regarding branch hours, reservations, and promotions overwhelming staff across 5 locations.",
+  "contact_role": null,
   "budget": {
     "amount": 80000,
     "currency": "THB",

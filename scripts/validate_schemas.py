@@ -19,6 +19,8 @@ if hasattr(sys.stdout, "reconfigure"):
 from jsonschema import Draft7Validator
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
 
 SCHEMAS = {
     "lead": ROOT_DIR / "schemas" / "lead.schema.json",
@@ -68,19 +70,17 @@ def main():
         sys.exit(1)
 
     # 2. Validate Configuration Files
-    print("\n[2/3] Validating configuration files...")
-    scoring_config_path = ROOT_DIR / "config" / "scoring.example.json"
-    if scoring_config_path.exists():
-        try:
-            cfg = load_json(scoring_config_path)
-            assert "priority_thresholds" in cfg, "Missing priority_thresholds"
-            assert "dimensions" in cfg, "Missing dimensions"
-            assert "human_review_triggers" in cfg, "Missing human_review_triggers"
-            print(f"  [PASS] {scoring_config_path.relative_to(ROOT_DIR)} structure valid")
-        except Exception as e:
-            err = f"  [FAIL] {scoring_config_path.relative_to(ROOT_DIR)} config error: {e}"
-            print(err)
-            errors.append(err)
+    print("\n[2/3] Validating the default business profile...")
+    profile_path = ROOT_DIR / "config" / "business-profile.default.json"
+    try:
+        from scripts.business_profile import BusinessProfile
+
+        BusinessProfile(**load_json(profile_path))
+        print(f"  [PASS] {profile_path.relative_to(ROOT_DIR)} is a valid business profile")
+    except Exception as e:
+        err = f"  [FAIL] {profile_path.relative_to(ROOT_DIR)} profile error: {e}"
+        print(err)
+        errors.append(err)
 
     # 3. Validate Example & Evaluation Datasets
     print("\n[3/3] Validating canonical payload instances against schemas...")

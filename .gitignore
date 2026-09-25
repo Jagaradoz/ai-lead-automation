@@ -8,6 +8,9 @@
 credentials.json
 service-account*.json
 
+# Runtime data (model settings with API keys, business profile edits, lead inbox)
+data/
+
 # Dependencies
 node_modules/
 __pycache__/
@@ -17,6 +20,8 @@ __pycache__/
 venv/
 ENV/
 .pytest_cache/
+.coverage
+htmlcov/
 
 # Build and runtime outputs
 dist/

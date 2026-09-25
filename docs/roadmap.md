@@ -19,7 +19,7 @@ To maintain absolute clarity regarding project status, milestones are labeled us
 - [x] Deterministic scoring schema (`schemas/lead-score.schema.json`).
 - [x] Comprehensive architectural and technical documentation.
 - [x] 10 diverse initial sample evaluation leads (`evaluation/datasets/sample-leads.json`).
-- [x] Declarative scoring rules configuration (`config/scoring.example.json`).
+- [x] Editable business profile driving prompt and scoring (`config/business-profile.default.json`).
 
 ### Milestone 0.1 — Lead Intelligence Core `[Completed]`
 - [x] Implement core n8n workflow pipeline (`workflows/core/workflow.json`).
@@ -37,7 +37,7 @@ To maintain absolute clarity regarding project status, milestones are labeled us
 ### Milestone 0.3 — Website Intake Channel `[Completed]`
 - [x] Mapping raw form fields into Canonical Lead representation (`scripts/normalize.py`).
 - [x] FastAPI REST ingestion endpoints (`POST /api/leads/process`, `POST /api/leads/normalize`).
-- [x] Interactive demo web application for live lead submissions and pipeline visualization (`examples/demo/index.html`).
+- [x] Web inbox with lead detail, status tracking, CSV export and settings (`web/`).
 - [ ] Website intake adapter n8n workflow (`workflows/website/`).
 - [ ] Public webhook endpoint with honeypot spam protection.
 

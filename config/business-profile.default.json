@@ -1,0 +1,124 @@
+{
+  "version": 1,
+  "business": {
+    "name": "Example Automation Studio",
+    "description": "We build AI customer service bots (LINE, web chat), CRM and lead-intake automation, and appointment reminder systems for small and mid-sized businesses in Thailand and abroad.",
+    "base_currency": "THB"
+  },
+  "currency_rates": {
+    "THB": 1,
+    "USD": 35,
+    "EUR": 38,
+    "GBP": 44,
+    "SGD": 26
+  },
+  "services": [
+    {
+      "name": "LINE AI customer service",
+      "tier": "core",
+      "keywords": ["line ai", "line bot", "line oa", "แชท line", "ตอบแชท"]
+    },
+    {
+      "name": "AI chatbot for customer questions",
+      "tier": "core",
+      "keywords": ["chatbot", "chat bot", "แชทบอท", "customer service bot", "ai bot", "virtual assistant"]
+    },
+    {
+      "name": "Appointment reminder automation",
+      "tier": "core",
+      "keywords": ["appointment reminder", "missed appointments", "scheduling follow-up", "booking reminder", "นัดหมาย"]
+    },
+    {
+      "name": "CRM and lead workflow automation",
+      "tier": "core",
+      "keywords": ["crm", "lead intake", "lead qualification", "workflow automation", "onboarding pipeline", "crm routing"]
+    },
+    {
+      "name": "E-commerce and API integration",
+      "tier": "adjacent",
+      "keywords": ["shopify", "woocommerce", "api integration", "webhook", "hubspot", "two-way sync"]
+    },
+    {
+      "name": "Spreadsheet and messaging integration",
+      "tier": "adjacent",
+      "keywords": ["google sheet", "google sheets", "spreadsheet", "whatsapp message", "welcome message"]
+    },
+    {
+      "name": "Data pipeline and compliance automation",
+      "tier": "adjacent",
+      "keywords": ["data pipeline", "data normalization", "compliance", "audit logging", "etl"]
+    },
+    {
+      "name": "Hardware repair",
+      "tier": "out_of_scope",
+      "keywords": ["hardware", "motherboard", "power supply", "server repair", "won't power on", "technician"]
+    },
+    {
+      "name": "SEO and backlinks",
+      "tier": "out_of_scope",
+      "keywords": ["seo", "backlinks", "google ranking", "search ranking"]
+    },
+    {
+      "name": "Mobile app development",
+      "tier": "out_of_scope",
+      "keywords": ["mobile app", "ios app", "android app", "app store"]
+    }
+  ],
+  "industries": [
+    {"name": "healthcare", "target": true, "keywords": ["healthcare", "dental", "clinic", "patient", "doctor", "hospital", "health", "คลินิก", "โรงพยาบาล"]},
+    {"name": "restaurant", "target": true, "keywords": ["restaurant", "cafe", "menu", "ร้านอาหาร", "จองโต๊ะ", "เมนู"]},
+    {"name": "ecommerce", "target": true, "keywords": ["shopify", "ecommerce", "e-commerce", "online store", "apparel", "fashion", "order refunds"]},
+    {"name": "hospitality", "target": true, "keywords": ["resort", "hotel", "villa", "hostel", "รีสอร์ต", "โรงแรม"]},
+    {"name": "logistics", "target": true, "keywords": ["logistics", "warehouse", "depot", "freight", "shipping"]},
+    {"name": "finance", "target": true, "keywords": ["financial", "finance", "loan", "bank", "insurance", "advisory"]},
+    {"name": "fitness", "target": false, "keywords": ["gym", "fitness", "yoga", "pilates"]},
+    {"name": "education", "target": false, "keywords": ["school", "tutor", "university", "course", "โรงเรียน"]}
+  ],
+  "target_company_sizes": ["11-50", "50+"],
+  "decision_maker_titles": [
+    "dr", "ceo", "cto", "coo", "founder", "co-founder", "owner", "director", "managing director",
+    "vp", "president", "manager", "head of", "เจ้าของ", "ผู้จัดการ", "กรรมการ", "ผู้บริหาร"
+  ],
+  "spam_phrases": [
+    "backlinks", "guaranteed #1", "ranking on google", "seo boost", "buy followers",
+    "traffic 10x", "crypto investment", "casino", "limited time offer", "click here"
+  ],
+  "scoring": {
+    "weights": {
+      "service_fit": 25,
+      "purchase_intent": 20,
+      "urgency": 20,
+      "budget_fit": 20,
+      "decision_authority": 5,
+      "company_fit": 5,
+      "data_completeness": 5
+    },
+    "service_fit": {"core": 100, "adjacent": 60, "uncatalogued": 20, "out_of_scope": 0},
+    "purchase_intent": {"high": 100, "medium": 50, "low": 0},
+    "urgency": {
+      "buckets": [
+        {"max_days": 30, "share": 100},
+        {"max_days": 90, "share": 60}
+      ],
+      "beyond": 25,
+      "unspecified": 25
+    },
+    "budget_fit": {
+      "tiers": [
+        {"min_amount": 100000, "share": 100},
+        {"min_amount": 40000, "share": 75},
+        {"min_amount": 0, "share": 25}
+      ],
+      "unspecified": 50
+    },
+    "data_completeness": {"full": 100, "basic": 60}
+  },
+  "priority_thresholds": {"high": 75, "medium": 45, "low": 20},
+  "review": {
+    "low_confidence_below": 0.65,
+    "large_budget_at_least": 300000,
+    "flag_out_of_scope": true,
+    "flag_spam": true,
+    "flag_ambiguous": true
+  }
+}

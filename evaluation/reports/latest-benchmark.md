@@ -1,6 +1,6 @@
 # AI Lead Automation - Evaluation Benchmark Report
 
-**Generated At**: 2026-09-25 08:34:37 UTC  
+**Generated At**: 2026-09-25 09:22:21 UTC  
 **Total Evaluation Leads**: 10  
 **Extraction Accuracy**: 100.0%  
 **Scoring Model Accuracy**: 100.0%  
@@ -18,8 +18,8 @@
 | `lead_eval_004` | Elena Rostova | `high` | None | 14 days | **75** | `HIGH` | `False` | **PASSED** |
 | `lead_eval_005` | กานดา สุวรรณเมธี | `medium` | 50,000 THB | Unstated | **65** | `MEDIUM` | `False` | **PASSED** |
 | `lead_eval_006` | Robert Henderson | `high` | None | 1 days | **60** | `MEDIUM` | `True` | **PASSED** |
-| `lead_eval_007` | SEO Specialist Kevin | `spam` | 49 USD | 14 days | **0** | `DISQUALIFIED` | `True` | **PASSED** |
-| `lead_eval_008` | Marcus Vance | `high` | 500,000 THB | 20 days | **95** | `HIGH` | `True` | **PASSED** |
+| `lead_eval_007` | SEO Specialist Kevin | `spam` | 49 USD | 1 days | **0** | `DISQUALIFIED` | `True` | **PASSED** |
+| `lead_eval_008` | Marcus Vance | `high` | 1,500,000 THB | 20 days | **95** | `HIGH` | `True` | **PASSED** |
 | `lead_eval_009` | Dave Miller | `medium` | 15,000 THB | 14 days | **60** | `MEDIUM` | `False` | **PASSED** |
 | `lead_eval_010` | สมบัติ | `ambiguous` | None | Unstated | **0** | `DISQUALIFIED` | `True` | **PASSED** |
 

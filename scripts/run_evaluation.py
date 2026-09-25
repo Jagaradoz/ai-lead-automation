@@ -11,7 +11,7 @@ import json
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 # Ensure UTF-8 output on Windows consoles
 if hasattr(sys.stdout, "reconfigure"):
@@ -28,15 +28,15 @@ if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
 from jsonschema import validate
-from ai_extractor import analyze_lead, load_analysis_schema
-from scoring_engine import score_lead
+from scripts.ai_extractor import analyze_lead, load_analysis_schema
+from scripts.scoring_engine import score_lead
 
 DATASET_PATH = ROOT_DIR / "evaluation" / "datasets" / "sample-leads.json"
 GROUND_TRUTH_PATH = ROOT_DIR / "evaluation" / "expected" / "ground-truth.json"
 REPORTS_DIR = ROOT_DIR / "evaluation" / "reports"
 
 
-def run_benchmarks() -> Dict[str, Any]:
+def run_benchmarks(reports_dir: Optional[Path] = None) -> Dict[str, Any]:
     with open(DATASET_PATH, "r", encoding="utf-8") as f:
         dataset = json.load(f)
     with open(GROUND_TRUTH_PATH, "r", encoding="utf-8") as f:
@@ -153,8 +153,9 @@ def run_benchmarks() -> Dict[str, Any]:
     print("==================================================================")
 
     # Generate Markdown Report
-    REPORTS_DIR.mkdir(parents=True, exist_ok=True)
-    report_file = REPORTS_DIR / "latest-benchmark.md"
+    reports_dir = reports_dir or REPORTS_DIR
+    reports_dir.mkdir(parents=True, exist_ok=True)
+    report_file = reports_dir / "latest-benchmark.md"
 
     now_str = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
     report_content = f"""# AI Lead Automation - Evaluation Benchmark Report
@@ -195,7 +196,7 @@ def run_benchmarks() -> Dict[str, Any]:
     with open(report_file, "w", encoding="utf-8") as f:
         f.write(report_content)
 
-    print(f"\n[PASS] Benchmark report successfully written to:\n       {report_file.relative_to(ROOT_DIR)}")
+    print(f"\n[PASS] Benchmark report successfully written to:\n       {report_file}")
     return {
         "total": total_leads,
         "extraction_accuracy": ext_accuracy,

@@ -59,7 +59,7 @@ Without systematic automation, organizations suffer from severe operational fric
 | **Workflow Orchestration** | Designing resilient, decoupled pipelines in n8n (`workflows/`) |
 | **Domain Data Modeling** | Defining strict JSON Schemas for canonical entities (`schemas/`) |
 | **Structured AI Outputs** | Constraining LLMs to deterministic JSON schemas without hallucinations (`schemas/lead-analysis.schema.json`) |
-| **Explainable Business Logic** | Transparent, configurable scoring models separated from AI prompts (`config/scoring.example.json`) |
+| **Explainable Business Logic** | Transparent, configurable scoring models separated from AI prompts (`config/business-profile.default.json`) |
 | **Multi-Channel Integration** | Architectural design for Facebook Lead Ads, LINE Messaging API, and Webhook protocols (`workflows/`) |
 | **Human-in-the-Loop Governance** | Defined boundary conditions for automation vs. human intervention (`docs/human-handoff.md`) |
 | **Automated AI Evaluation** | Test suites and ground-truth validation datasets (`evaluation/`) |

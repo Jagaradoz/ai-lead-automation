@@ -18,7 +18,7 @@ ROOT_DIR = Path(__file__).resolve().parent.parent
 async def client():
     async with httpx.AsyncClient(
         transport=httpx.ASGITransport(app=app),
-        base_url="http://testserver"
+        base_url="http://127.0.0.1"
     ) as c:
         yield c
 
@@ -105,9 +105,13 @@ async def test_normalize_endpoint(client):
 
 
 @pytest.mark.anyio
-async def test_serve_demo_html(client):
+async def test_serve_web_app(client):
     response = await client.get("/")
     assert response.status_code == 200
     assert "AI Lead Automation" in response.text
-    assert "Analyze Lead" in response.text
+    assert "Analyze lead" in response.text
+
+    script = await client.get("/js/app.js")
+    assert script.status_code == 200
+    assert "javascript" in script.headers["content-type"]
 

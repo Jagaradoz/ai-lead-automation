@@ -93,7 +93,7 @@ The core processing system does not know—and does not care—whether a lead or
 ### 3.2. Strict Separation: AI Interpretation vs. Business Scoring
 A widespread flaw in prototype automation is asking an LLM to "score this lead from 1 to 100". This introduces non-deterministic hallucinations, drift across model versions, and a total lack of explainability for sales representatives.
 - **AI's Role**: Unstructured data interpretation. The LLM translates ambiguous human text into objective attributes (e.g., `"service_requested": "LINE AI customer service"`, `"budget": {"amount": 80000, "currency": "THB"}`).
-- **Rule Engine's Role**: Deterministic business calculations. A declarative ruleset (`config/scoring.example.json`) awards points based on those extracted attributes. If a lead receives an 85, a sales manager can audit exactly why: 25 pts for service fit, 20 for budget, 20 for urgency, 20 for intent.
+- **Rule Engine's Role**: Deterministic business calculations. A declarative business profile (`config/business-profile.default.json`, editable in *Settings > Business profile*) awards points based on those extracted attributes. If a lead receives an 85, a sales manager can audit exactly why: 25 pts for service fit, 20 for budget, 20 for urgency, 20 for intent.
 
 ### 3.3. Human-in-the-Loop Governance
 Automation should amplify sales velocity, not replace human judgment.

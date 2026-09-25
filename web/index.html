@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Lead Automation</title>
+  <meta name="description" content="Paste or receive sales leads, see what they need, and decide who to contact first.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Thai:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="topbar">
+    <a class="brand" href="#/inbox">AI Lead Automation</a>
+    <nav class="topnav" aria-label="Main">
+      <a href="#/inbox" data-nav="inbox">Inbox</a>
+      <a href="#/settings/model" data-nav="settings">Settings</a>
+    </nav>
+    <a class="engine" id="engine-chip" href="#/settings/model" title="Which engine analyzes new leads">
+      <span class="engine-dot" aria-hidden="true"></span>
+      <span id="engine-label">Checking engine…</span>
+    </a>
+    <button type="button" class="btn btn-primary" id="open-new-lead" aria-label="New lead">
+      <svg class="icon" aria-hidden="true" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10"/></svg>
+      <span class="btn-label">New lead</span>
+    </button>
+  </header>
+
+  <main id="main" tabindex="-1"></main>
+
+  <dialog class="sheet" id="new-lead-sheet" aria-labelledby="new-lead-title">
+    <form class="sheet-body" id="new-lead-form" novalidate>
+      <div class="sheet-head">
+        <h2 id="new-lead-title">New lead</h2>
+        <button type="button" class="btn btn-quiet btn-icon" data-close aria-label="Close">
+          <svg class="icon" aria-hidden="true" viewBox="0 0 16 16"><path d="M4 4l8 8M12 4l-8 8"/></svg>
+        </button>
+      </div>
+
+      <label class="field">
+        <span class="field-label">Try a sample</span>
+        <select id="sample-select">
+          <option value="">Paste your own lead below</option>
+        </select>
+      </label>
+
+      <label class="field">
+        <span class="field-label">Message</span>
+        <textarea id="lead-message" name="message" rows="9" required maxlength="20000"
+          placeholder="Paste the enquiry exactly as the customer wrote it. Thai or English."></textarea>
+      </label>
+
+      <div class="field-row">
+        <label class="field">
+          <span class="field-label">Name</span>
+          <input id="lead-name" name="name" autocomplete="off" required>
+        </label>
+        <label class="field">
+          <span class="field-label">Company <span class="optional">optional</span></span>
+          <input id="lead-company" name="company" autocomplete="off">
+        </label>
+      </div>
+      <div class="field-row">
+        <label class="field">
+          <span class="field-label">Email <span class="optional">optional</span></span>
+          <input id="lead-email" name="email" type="email" autocomplete="off">
+        </label>
+        <label class="field">
+          <span class="field-label">Phone <span class="optional">optional</span></span>
+          <input id="lead-phone" name="phone" type="tel" autocomplete="off">
+        </label>
+      </div>
+      <div class="field-row">
+        <label class="field">
+          <span class="field-label">Channel</span>
+          <select id="lead-source" name="source">
+            <option value="website">Website form</option>
+            <option value="line">LINE</option>
+            <option value="facebook">Facebook</option>
+            <option value="email">Email</option>
+            <option value="api">Other</option>
+          </select>
+        </label>
+        <label class="field">
+          <span class="field-label">Company size <span class="optional">optional</span></span>
+          <select id="lead-size" name="size">
+            <option value="">Unknown</option>
+            <option value="1-10">1–10</option>
+            <option value="11-50">11–50</option>
+            <option value="50+">50+</option>
+          </select>
+        </label>
+      </div>
+
+      <p class="form-error" id="new-lead-error" role="alert" hidden></p>
+
+      <div class="sheet-foot">
+        <button type="button" class="btn" data-close>Cancel</button>
+        <button type="submit" class="btn btn-primary" id="analyze-btn">Analyze lead</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>

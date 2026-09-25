@@ -2,7 +2,7 @@
 
 [![Status: MVP Live](https://img.shields.io/badge/Status-MVP%20Live%20%2F%20Interactive%20Demo-emerald.svg)](#current-status)
 [![Architecture: Channel--Independent](https://img.shields.io/badge/Architecture-Channel--Independent-orange.svg)](docs/architecture.md)
-[![Tests: Passing](https://img.shields.io/badge/Tests-14%2F14%20Passing-brightgreen.svg)](tests/)
+[![Tests: Passing](https://img.shields.io/badge/Tests-120%20Passing-brightgreen.svg)](tests/)
 
 > **Portfolio Project**: A demonstration of multi-channel lead intake, AI-assisted factual extraction, explainable deterministic lead scoring, and automated CRM orchestration.
 
@@ -83,12 +83,18 @@ Action Dispatcher & Human-in-the-Loop Governance
 ## 5. Current Status & Milestone
 
 ```text
-Status: Early development / infrastructure phase
-Current Milestone: Milestone 0.0 — Scaffolding & Lead Domain Architecture
+Status: Usable locally. Web inbox, configurable model, editable scoring rules.
+Current Milestone: 0.3 website intake + 0.4 alerts (preview) + 0.6 evaluation harness
 ```
 
+What works today:
+
+- **Lead inbox**: every processed lead is stored (SQLite) with its score, status (new, contacted, qualified, won, lost, spam) and notes. Filter, search, sort, re-score and export to CSV.
+- **Bring your own model**: pick Anthropic, OpenAI, OpenRouter, Groq, DeepSeek, Gemini, a local Ollama or LM Studio server, or any OpenAI-compatible endpoint in *Settings > Model*. With no model configured, a built-in rules engine extracts the facts instead, and every lead shows which engine analyzed it and why.
+- **Your business, your rules**: *Settings > Business profile* holds the service catalog, target industries, budget tiers, currencies, timeline buckets, dimension weights, priority thresholds and review triggers. The model prompt and the scoring engine both read it, so nothing about the business is hardcoded.
+
 > [!NOTE]
-> This is an evolving portfolio demonstration project. It is **not** currently presented as a finished production SaaS product. The focus of this milestone is establishing clean architecture, domain schemas, baseline evaluation datasets, and transparent documentation.
+> Built for local or single-team use. Lead data has no login, so keep the server on your machine or team network. `ADMIN_TOKEN` locks the settings. See [Security notes](#security-notes).
 
 ---
 
@@ -163,7 +169,16 @@ ai-lead-automation/
 │   └── lead-score.schema.json          # Deterministic score & audit log schema
 │
 ├── config/                             # Business configuration
-│   └── scoring.example.json            # Declarative scoring weights, rules, & thresholds
+│   └── business-profile.default.json   # Default service catalog, scoring weights, thresholds
+│
+├── web/                                # Build-free web app (inbox, lead detail, settings)
+│   ├── index.html, styles.css
+│   └── js/                             # ES modules: inbox, lead detail, new lead, settings
+│
+├── data/                               # Created at runtime, git-ignored
+│   ├── settings.json                   # Model settings (includes your API key)
+│   ├── business-profile.json           # Your edited business profile
+│   └── leads.db                        # Lead inbox (SQLite)
 │
 ├── examples/                           # Concrete JSON fixtures illustrating pipeline lifecycle
 │   ├── incoming-lead.json              # 1. Raw unstructured website form payload
@@ -189,8 +204,16 @@ ai-lead-automation/
 │   └── line/                           # LINE OA Conversational Qualification Adapter
 │       └── README.md
 │
-└── scripts/                            # Planned developer utilities & runners
-    └── README.md                       # Validation and evaluation CLI tools
+└── scripts/                            # Python application code
+    ├── serve_api.py                    # FastAPI app (mounts routers, serves web/)
+    ├── api/                            # Lead and settings HTTP endpoints
+    ├── llm/                            # Model providers + model settings store
+    ├── ai_extractor.py                 # Model-or-rules fact extraction with visible fallback
+    ├── rules_extractor.py              # Deterministic extraction (EN/TH budgets, timelines, intent)
+    ├── scoring_engine.py               # Deterministic scoring driven by the business profile
+    ├── business_profile.py             # Profile model, validation, persistence
+    ├── lead_store.py                   # SQLite lead repository
+    └── normalize.py                    # Channel adapters to the Canonical Lead
 ```
 
 ---
@@ -208,32 +231,66 @@ To understand how data flows through the system, inspect the step-by-step exampl
 
 ## 11. Getting Started & Verification
 
-### 1. Launch the Live Interactive Demo Dashboard (Simplest)
-Start the entire app with a single command:
+### 1. Install and run
 
 ```bash
+pip install -r requirements.txt
 python main.py
 ```
-*(On Windows, you can also simply run `.\run.bat` or double-click `run.bat`)*
+*(On Windows you can also run `.\run.bat`.)*
 
-Then open **`http://localhost:8000`** in your browser to:
-- Test 1-click lead presets (Healthcare SMB, Thai Restaurant, Urgent Shopify, Enterprise RFP, Spam, Hardware Out-of-Scope).
-- Submit custom multi-lingual inquiries (English/Thai) across Website, LINE OA, or Facebook channels.
-- Inspect real-time canonical normalization, AI fact extraction, 7-dimension score breakdowns, and HubSpot/Slack dispatch previews.
+Open **http://localhost:8000**. Click **New lead**, paste an enquiry (or pick a sample), and choose **Analyze lead**. The lead appears in the inbox with an itemized score that shows the points and the reason for each part.
 
-### 2. Run Automated Quality & Integrity Suites
+### 2. Connect a model
+
+Open **Settings > Model**, choose a provider, enter the model name and API key, and click **Test connection**. A sample lead goes to the model, and the page shows whether it answered and how it read the lead. **Save** to use it for new leads.
+
+| Provider | Base URL (pre-filled) | Key |
+| :--- | :--- | :--- |
+| Anthropic | `https://api.anthropic.com` | required |
+| OpenAI, OpenRouter, Groq, DeepSeek, Gemini | pre-filled per provider | required |
+| Ollama / LM Studio | `http://localhost:11434/v1`, `http://localhost:1234/v1` | not needed |
+| Other OpenAI-compatible server | your URL | optional |
+
+You can also configure the model in `.env` (`LLM_PROVIDER`, `LLM_MODEL`, `LLM_API_KEY`, `LLM_BASE_URL`). See [`.env.example`](.env.example). Settings saved in the app take precedence.
+
+Choose what happens when the model fails. By default the lead falls back to the built-in rules and records the reason. Alternatively, the request can return an error and the lead isn't saved.
+
+### 3. Describe your business
+
+Open **Settings > Business profile** and replace the example agency with your own:
+
+- **What you sell**: each service has a tier (core, adjacent, out of scope) and keywords. The model maps each lead to one of these services, and the tier decides the service-fit points.
+- **Who you sell to**: target industries and company sizes, plus the job titles that count as decision makers.
+- **Scoring**: the weight of each of the 7 dimensions (must total 100), budget tiers in your base currency, exchange rates, timeline buckets, and priority thresholds.
+
+After you save, you can re-score the existing inbox with the new rules. Re-scoring doesn't call the model.
+
+### 4. Send leads from other systems
 
 ```bash
-# 1. Run all unit and API integration tests
-python main.py --test
-
-# 2. Verify all Draft-07 JSON schemas, configurations, and datasets
-python main.py --val
-
-# 3. Execute the 10-lead ground-truth evaluation benchmark
-python main.py --eval
+curl -X POST http://localhost:8000/api/leads/process \
+  -H "Content-Type: application/json" \
+  -d '{"contact": {"name": "Pat", "email": "pat@example.com"}, "company": {"name": "Example Co"}, "message": "We need a LINE bot for bookings, budget 80k THB, within a month."}'
 ```
 
+The endpoint accepts website form, LINE webhook, Facebook Lead Ads and canonical payloads. Full API docs are at `/docs`.
+
+### 5. Run the quality suites
+
+```bash
+python main.py --test   # unit + API tests (includes the 10-lead benchmark)
+python main.py --val    # schemas, examples, datasets, default business profile
+python main.py --eval   # ground-truth benchmark report (rules engine)
+```
+
+### Security notes
+
+- API keys are stored in plain text in `data/settings.json` on the server and are never returned to the browser. Keep `data/` private (it is git-ignored).
+- The server binds to `127.0.0.1` and only answers to the host names in `ALLOWED_HOSTS`. Writes from other websites are rejected.
+- `ADMIN_TOKEN` protects settings only: changing the model or key, testing a connection, listing models and editing the business profile. **Lead data has no login.** Anyone who can reach the server can read and export leads, so don't expose it beyond your machine or team network without a login in front of it (for example, a reverse proxy with authentication).
+- A saved API key is only sent to the server it was saved for. If you change the base URL, you must enter the key again. Model servers on link-local or cloud-metadata addresses are refused.
+- Lead text is untrusted. The UI renders it as text only, a Content-Security-Policy is set, and the model prompt tells the model to ignore instructions inside the lead.
 
 ---
 

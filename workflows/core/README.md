@@ -45,7 +45,7 @@ Canonical Lead Payload (HTTP POST / Sub-Workflow Call)
 1. **Webhook / Trigger Node**: Receives normalized lead JSON.
 2. **Code Node (Validator)**: Validates required fields against `schemas/lead.schema.json`.
 3. **AI Agent / LLM Structured Output Node**: Invokes the LLM with a strict JSON schema prompt to extract objective facts without subjective scoring.
-4. **Code Node (Rule Engine)**: Executes deterministic business logic defined in `config/scoring.example.json`. Returns an explainable score breakdown.
+4. **Code Node (Rule Engine)**: Executes deterministic business logic defined in the business profile (`config/business-profile.default.json`). Returns an explainable score breakdown.
 5. **HubSpot Node**: Interacts with the CRM API using private app credentials.
 6. **Notification Node**: Dispatches formatted markdown alerts to Slack/Teams/Email.
 

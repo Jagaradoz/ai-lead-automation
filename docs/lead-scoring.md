@@ -14,7 +14,7 @@ In traditional sales development, scoring models frequently suffer from one of t
 Extracted Facts (from AI Analysis)
   │
   ▼
-Rule Engine (config/scoring.example.json)
+Rule Engine (business profile: Settings > Business profile)
   │
   ├── Service Fit:          25 / 25 pts  ("Core offering match: LINE AI")
   ├── Purchase Intent:      20 / 20 pts  ("Stated high intent & approved budget")
@@ -32,7 +32,9 @@ Rule Engine (config/scoring.example.json)
 
 ## 2. The 7 Scoring Dimensions
 
-The scoring engine evaluates leads across seven distinct, configurable dimensions:
+The scoring engine evaluates leads across seven distinct, configurable dimensions.
+
+> The point values below are the shipped defaults. Each dimension's weight, the share of that weight earned per tier, budget tiers, exchange rates, timeline buckets, target industries and thresholds are all editable in *Settings > Business profile* (stored in `data/business-profile.json`, default in `config/business-profile.default.json`). The model maps each lead to a service in your catalog; the catalog tier, not the model, decides the service-fit points.
 
 ### 1. Service Fit (Max 25 pts)
 Measures alignment between what the prospect wants and what the business actually sells.

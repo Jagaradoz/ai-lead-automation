@@ -39,7 +39,7 @@ Structured, Normalized Factual Attributes
 | :--- | :--- | :--- |
 | **Explainability** | Opaque: "The AI gave you 74." Sales reps cannot explain why. | Transparent: "25 pts service fit + 20 pts budget + 20 pts urgency = 85 (High)." |
 | **Consistency / Drift** | High variance across model updates, temperatures, and prompts. | 100% deterministic: Identical extracted facts always yield the exact same score. |
-| **Business Agility** | Modifying business priorities requires rewiring and re-evaluating prompt text. | Modifying priorities simply means tweaking weights in `config/scoring.example.json`. |
+| **Business Agility** | Modifying business priorities requires rewiring and re-evaluating prompt text. | Modifying priorities simply means editing the business profile (*Settings > Business profile*, default in `config/business-profile.default.json`). |
 | **Auditability** | Non-compliant with enterprise governance and audit requirements. | Fully auditable logs recorded in CRM custom properties. |
 
 ---
