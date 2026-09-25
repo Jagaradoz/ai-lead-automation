@@ -1,0 +1,156 @@
+[
+  {
+    "lead_id": "lead_eval_001",
+    "description": "Strong English healthcare SMB with approved budget and tight timeline",
+    "expected_extraction": {
+      "industry": "healthcare",
+      "service_requested": "appointment reminder automation",
+      "budget_stated": true,
+      "budget_min_thb": 450000,
+      "timeline_max_days": 30,
+      "intent": "high",
+      "language": "en"
+    },
+    "expected_scoring": {
+      "score_range": { "min": 75, "max": 100 },
+      "expected_priority": "high",
+      "requires_human_review": true,
+      "review_reason_substring": "Large opportunity"
+    }
+  },
+  {
+    "lead_id": "lead_eval_002",
+    "description": "Strong Thai multi-branch restaurant SMB requesting LINE AI bot",
+    "expected_extraction": {
+      "industry": "restaurant",
+      "service_requested": "LINE AI customer service",
+      "budget_stated": true,
+      "budget_min_thb": 100000,
+      "timeline_max_days": 30,
+      "intent": "high",
+      "language": "th"
+    },
+    "expected_scoring": {
+      "score_range": { "min": 75, "max": 100 },
+      "expected_priority": "high",
+      "requires_human_review": false
+    }
+  },
+  {
+    "lead_id": "lead_eval_003",
+    "description": "Weak enquiry with no company, no budget, and casual pricing question",
+    "expected_extraction": {
+      "budget_stated": false,
+      "intent": "low",
+      "language": "en"
+    },
+    "expected_scoring": {
+      "score_range": { "min": 0, "max": 35 },
+      "expected_priority": "disqualified"
+    }
+  },
+  {
+    "lead_id": "lead_eval_004",
+    "description": "Urgent Shopify ecommerce brand needing HubSpot integration with unstated budget",
+    "expected_extraction": {
+      "industry": "ecommerce",
+      "budget_stated": false,
+      "timeline_max_days": 14,
+      "intent": "high",
+      "language": "en"
+    },
+    "expected_scoring": {
+      "score_range": { "min": 60, "max": 85 },
+      "expected_priority": "high",
+      "requires_human_review": false
+    }
+  },
+  {
+    "lead_id": "lead_eval_005",
+    "description": "Hospitality SMB with modest budget and flexible timeline",
+    "expected_extraction": {
+      "industry": "hospitality",
+      "budget_stated": true,
+      "timeline_max_days": null,
+      "intent": "medium",
+      "language": "th"
+    },
+    "expected_scoring": {
+      "score_range": { "min": 45, "max": 75 },
+      "expected_priority": "medium",
+      "requires_human_review": false
+    }
+  },
+  {
+    "lead_id": "lead_eval_006",
+    "description": "Out-of-scope physical hardware repair request from logistics firm",
+    "expected_extraction": {
+      "intent": "high",
+      "language": "en"
+    },
+    "expected_scoring": {
+      "score_range": { "min": 20, "max": 65 },
+      "requires_human_review": true,
+      "review_reason_substring": "unsupported"
+    }
+  },
+  {
+    "lead_id": "lead_eval_007",
+    "description": "Commercial spam submission offering SEO backlinks",
+    "expected_extraction": {
+      "intent": "spam",
+      "language": "en"
+    },
+    "expected_scoring": {
+      "score_range": { "min": 0, "max": 10 },
+      "expected_priority": "disqualified",
+      "requires_human_review": true,
+      "review_reason_substring": "spam"
+    }
+  },
+  {
+    "lead_id": "lead_eval_008",
+    "description": "Large institutional enterprise RFP inquiry with multi-million THB budget",
+    "expected_extraction": {
+      "industry": "finance",
+      "budget_stated": true,
+      "budget_min_thb": 1000000,
+      "timeline_max_days": 30,
+      "intent": "high",
+      "language": "en"
+    },
+    "expected_scoring": {
+      "score_range": { "min": 80, "max": 100 },
+      "expected_priority": "high",
+      "requires_human_review": true,
+      "review_reason_substring": "Large opportunity"
+    }
+  },
+  {
+    "lead_id": "lead_eval_009",
+    "description": "Solo gym owner with below-minimum budget (15,000 THB)",
+    "expected_extraction": {
+      "budget_stated": true,
+      "intent": "medium",
+      "language": "en"
+    },
+    "expected_scoring": {
+      "score_range": { "min": 35, "max": 65 },
+      "requires_human_review": false
+    }
+  },
+  {
+    "lead_id": "lead_eval_010",
+    "description": "Ambiguous one-liner LINE inquiry without contact or requirements",
+    "expected_extraction": {
+      "intent": "ambiguous",
+      "language": "th"
+    },
+    "expected_scoring": {
+      "score_range": { "min": 0, "max": 25 },
+      "expected_priority": "disqualified",
+      "requires_human_review": true,
+      "review_reason_substring": "Ambiguous"
+    }
+  }
+]

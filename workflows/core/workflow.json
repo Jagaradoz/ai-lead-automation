@@ -1,0 +1,192 @@
+{
+  "name": "Core Lead Intelligence Pipeline",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "leads/incoming",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-intake-trigger",
+      "name": "Webhook: Ingest Lead",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [100, 300],
+      "webhookId": "core-lead-intake-webhook"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. Canonical Schema Validation\nconst lead = $input.first().json;\n\nconst requiredFields = ['lead_id', 'source', 'contact', 'message', 'received_at'];\nconst missing = requiredFields.filter(f => lead[f] === undefined || lead[f] === null);\n\nif (missing.length > 0) {\n  throw new Error(`SchemaValidationError: Missing required fields: ${missing.join(', ')}`);\n}\n\nif (!lead.contact || (!lead.contact.email && !lead.contact.phone)) {\n  // Incomplete contact, tag for downstream review\n  lead._schema_warning = 'Incomplete contact details';\n}\n\nreturn [{ json: lead }];"
+      },
+      "id": "schema-validator-node",
+      "name": "Validate Canonical Schema",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [320, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"gpt-4o-mini\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are an enterprise AI Lead Analyst. Extract structured business facts from sales inquiries strictly matching the JSON schema. Do not guess unmentioned budgets or deadlines.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"Analyze this inquiry:\\n\\nMessage: \" + $json.message + \"\\nContact: \" + JSON.stringify($json.contact) + \"\\nCompany: \" + JSON.stringify($json.company)\n    }\n  ],\n  \"response_format\": {\n    \"type\": \"json_schema\",\n    \"json_schema\": {\n      \"name\": \"lead_analysis\",\n      \"strict\": true,\n      \"schema\": {\n        \"type\": \"object\",\n        \"required\": [\"industry\", \"service_requested\", \"problem\", \"budget\", \"timeline_days\", \"intent\", \"language\", \"summary\", \"missing_information\", \"confidence_score\"],\n        \"properties\": {\n          \"industry\": { \"type\": [\"string\", \"null\"] },\n          \"service_requested\": { \"type\": [\"string\", \"null\"] },\n          \"problem\": { \"type\": [\"string\", \"null\"] },\n          \"budget\": {\n            \"type\": \"object\",\n            \"required\": [\"amount\", \"currency\", \"stated\"],\n            \"properties\": {\n              \"amount\": { \"type\": [\"number\", \"null\"] },\n              \"currency\": { \"type\": [\"string\", \"null\"] },\n              \"stated\": { \"type\": \"boolean\" }\n            },\n            \"additionalProperties\": false\n          },\n          \"timeline_days\": { \"type\": [\"integer\", \"null\"] },\n          \"intent\": { \"type\": \"string\", \"enum\": [\"high\", \"medium\", \"low\", \"spam\", \"ambiguous\"] },\n          \"language\": { \"type\": \"string\" },\n          \"summary\": { \"type\": \"string\" },\n          \"missing_information\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },\n          \"confidence_score\": { \"type\": \"number\" }\n        },\n        \"additionalProperties\": false\n      }\n    }\n  },\n  \"temperature\": 0.0\n}"
+      },
+      "id": "ai-extraction-node",
+      "name": "AI Fact Extraction (OpenAI)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [540, 300],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Deterministic Rule Engine\nconst lead = $('Validate Canonical Schema').first().json;\nconst aiResponse = $input.first().json;\n\nlet analysis;\ntry {\n  if (aiResponse.choices && aiResponse.choices[0]) {\n    analysis = JSON.parse(aiResponse.choices[0].message.content);\n  } else {\n    throw new Error('AI response fallback');\n  }\n} catch (err) {\n  // Graceful degradation heuristic\n  const msg = (lead.message || '').toLowerCase();\n  analysis = {\n    industry: msg.includes('restaurant') ? 'restaurant' : null,\n    service_requested: msg.includes('line') ? 'LINE AI customer service' : 'automation',\n    problem: lead.message,\n    budget: { amount: null, currency: 'THB', stated: false },\n    timeline_days: 30,\n    intent: 'medium',\n    language: 'en',\n    summary: 'Fallback extraction due to AI timeout/error',\n    missing_information: ['ai_parsing_verification'],\n    confidence_score: 0.50\n  };\n}\n\n// 1. Service Fit (0-25)\nlet s_fit = 0;\nconst s_req = (analysis.service_requested || '').toLowerCase();\nconst prob = (analysis.problem || '').toLowerCase();\nconst combined = `${s_req} ${prob}`;\n\nif (combined.includes('hardware') || combined.includes('seo') || combined.includes('backlink')) {\n  s_fit = 0;\n} else if (combined.includes('line ai') || combined.includes('crm') || combined.includes('reminder') || combined.includes('bot')) {\n  s_fit = 25;\n} else if (combined.includes('shopify') || combined.includes('integration') || combined.includes('sheet')) {\n  s_fit = 15;\n} else {\n  s_fit = 5;\n}\n\n// 2. Intent (0-20)\nlet p_intent = 0;\nif (analysis.intent === 'high') p_intent = 20;\nelse if (analysis.intent === 'medium') p_intent = 10;\n\n// 3. Urgency (0-20)\nlet urg = 5;\nif (analysis.timeline_days && analysis.timeline_days <= 30) urg = 20;\nelse if (analysis.timeline_days && analysis.timeline_days <= 90) urg = 12;\n\n// 4. Budget Fit (0-20)\nlet b_fit = 10;\nlet b_thb = 0;\nif (analysis.budget && analysis.budget.stated && analysis.budget.amount) {\n  b_thb = analysis.budget.currency === 'USD' ? analysis.budget.amount * 35 : analysis.budget.amount;\n  if (b_thb >= 100000) b_fit = 20;\n  else if (b_thb >= 40000) b_fit = 15;\n  else b_fit = 5;\n}\n\n// 5. Decision Authority (0-5)\nconst name = (lead.contact?.name || '').toLowerCase();\nconst isExec = /\\b(dr|ceo|founder|director|owner|vp|manager)\\b/.test(name);\nconst d_auth = isExec ? 5 : 0;\n\n// 6. Company Fit (0-5)\nconst c_fit = (analysis.industry || lead.company?.size) ? 5 : 0;\n\n// 7. Data Completeness (0-5)\nconst d_comp = (lead.contact?.email && lead.contact?.phone && lead.company?.name) ? 5 : 3;\n\nlet total = s_fit + p_intent + urg + b_fit + d_auth + c_fit + d_comp;\nif (analysis.intent === 'spam') total = 0;\ntotal = Math.max(0, Math.min(100, total));\n\nlet priority = 'disqualified';\nif (analysis.intent !== 'spam') {\n  if (total >= 75) priority = 'high';\n  else if (total >= 45) priority = 'medium';\n  else if (total >= 20) priority = 'low';\n}\n\n// Human Review Triggers\nconst reviewReasons = [];\nif (analysis.confidence_score < 0.65) reviewReasons.push('Low AI confidence threshold');\nif (b_thb >= 300000) reviewReasons.push('Enterprise budget opportunity (>= 300k THB)');\nif (s_fit === 0 && analysis.intent !== 'spam') reviewReasons.push('Unsupported service inquiry');\nif (analysis.intent === 'spam') reviewReasons.push('Spam solicitation suppressed');\nif (analysis.intent === 'ambiguous') reviewReasons.push('Ambiguous lead triage');\n\nreturn [{\n  json: {\n    lead: lead,\n    analysis: analysis,\n    score_result: {\n      lead_id: lead.lead_id,\n      total_score: total,\n      priority: priority,\n      score_breakdown: {\n        service_fit: s_fit,\n        purchase_intent: p_intent,\n        urgency: urg,\n        budget_fit: b_fit,\n        decision_authority: d_auth,\n        company_fit: c_fit,\n        data_completeness: d_comp\n      },\n      requires_human_review: reviewReasons.length > 0,\n      human_review_reasons: reviewReasons,\n      scored_at: new Date().toISOString()\n    }\n  }\n}];"
+      },
+      "id": "scoring-engine-node",
+      "name": "Deterministic Scoring Engine",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [760, 300]
+    },
+    {
+      "parameters": {
+        "dataType": "string",
+        "value1": "={{ $json.score_result.priority }}",
+        "rules": {
+          "rules": [
+            { "value2": "high", "outputKey": "high" },
+            { "value2": "medium", "outputKey": "medium" },
+            { "value2": "low", "outputKey": "low" },
+            { "value2": "disqualified", "outputKey": "disqualified" }
+          ]
+        }
+      },
+      "id": "priority-router-node",
+      "name": "Priority Router",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [980, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.score_result.requires_human_review }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "human-review-filter",
+      "name": "Check Human Review",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1200, 160]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.hubapi.com/crm/v3/objects/contacts",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"properties\": {\n    \"email\": \"{{ $json.lead.contact.email }}\",\n    \"firstname\": \"{{ $json.lead.contact.name }}\",\n    \"phone\": \"{{ $json.lead.contact.phone }}\",\n    \"company\": \"{{ $json.lead.company.name }}\",\n    \"lead_score_total\": {{ $json.score_result.total_score }},\n    \"lead_score_priority\": \"{{ $json.score_result.priority }}\",\n    \"ai_lead_summary\": \"{{ $json.analysis.summary }}\",\n    \"requires_human_review\": \"{{ $json.score_result.requires_human_review }}\"\n  }\n}"
+      },
+      "id": "hubspot-sync-node",
+      "name": "HubSpot CRM Sync",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1420, 220]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.SLACK_WEBHOOK_URL }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"blocks\": [\n    {\n      \"type\": \"header\",\n      \"text\": {\n        \"type\": \"plain_text\",\n        \"text\": \"🔥 High Priority Lead Alert (Score: \" + $json.score_result.total_score + \")\"\n      }\n    },\n    {\n      \"type\": \"section\",\n      \"text\": {\n        \"type\": \"mrkdwn\",\n        \"text\": \"*Prospect:* \" + $json.lead.contact.name + \" (\" + ($json.lead.company.name || 'No company') + \")\\n*Service:* \" + ($json.analysis.service_requested || 'Not specified') + \"\\n*Summary:* \" + $json.analysis.summary\n      }\n    }\n  ]\n}"
+      },
+      "id": "slack-alert-node",
+      "name": "Slack High Priority Alert",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1640, 140]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"success\",\n  \"lead_id\": $json.score_result.lead_id,\n  \"priority\": $json.score_result.priority,\n  \"score\": $json.score_result.total_score,\n  \"requires_human_review\": $json.score_result.requires_human_review\n}",
+        "options": {}
+      },
+      "id": "respond-webhook-node",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1860, 300]
+    }
+  ],
+  "connections": {
+    "Webhook: Ingest Lead": {
+      "main": [
+        [{ "node": "Validate Canonical Schema", "type": "main", "index": 0 }]
+      ]
+    },
+    "Validate Canonical Schema": {
+      "main": [
+        [{ "node": "AI Fact Extraction (OpenAI)", "type": "main", "index": 0 }]
+      ]
+    },
+    "AI Fact Extraction (OpenAI)": {
+      "main": [
+        [{ "node": "Deterministic Scoring Engine", "type": "main", "index": 0 }]
+      ]
+    },
+    "Deterministic Scoring Engine": {
+      "main": [
+        [{ "node": "Priority Router", "type": "main", "index": 0 }]
+      ]
+    },
+    "Priority Router": {
+      "main": [
+        [{ "node": "Check Human Review", "type": "main", "index": 0 }],
+        [{ "node": "HubSpot CRM Sync", "type": "main", "index": 0 }],
+        [{ "node": "HubSpot CRM Sync", "type": "main", "index": 0 }],
+        [{ "node": "Respond to Webhook", "type": "main", "index": 0 }]
+      ]
+    },
+    "Check Human Review": {
+      "main": [
+        [{ "node": "HubSpot CRM Sync", "type": "main", "index": 0 }],
+        [{ "node": "Slack High Priority Alert", "type": "main", "index": 0 }]
+      ]
+    },
+    "HubSpot CRM Sync": {
+      "main": [
+        [{ "node": "Respond to Webhook", "type": "main", "index": 0 }]
+      ]
+    },
+    "Slack High Priority Alert": {
+      "main": [
+        [{ "node": "HubSpot CRM Sync", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

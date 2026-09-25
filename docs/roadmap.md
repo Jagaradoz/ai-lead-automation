@@ -21,12 +21,12 @@ To maintain absolute clarity regarding project status, milestones are labeled us
 - [x] 10 diverse initial sample evaluation leads (`evaluation/datasets/sample-leads.json`).
 - [x] Declarative scoring rules configuration (`config/scoring.example.json`).
 
-### Milestone 0.1 — Lead Intelligence Core `[Planned]`
-- [ ] Implement core n8n workflow pipeline (`workflows/core/`).
-- [ ] End-to-end execution path:
+### Milestone 0.1 — Lead Intelligence Core `[Completed]`
+- [x] Implement core n8n workflow pipeline (`workflows/core/workflow.json`).
+- [x] End-to-end execution path:
   `Test JSON Payload ──► Webhook ──► Normalize ──► Validate ──► AI Fact Extraction ──► Deterministic Rule Engine ──► Structured Output JSON`
-- [ ] OpenAI Structured Outputs JSON schema integration.
-- [ ] Configurable rule execution node with point-by-point explanations.
+- [x] OpenAI Structured Outputs JSON schema integration.
+- [x] Configurable rule execution node with point-by-point explanations.
 
 ### Milestone 0.2 — CRM Integration (HubSpot) `[Planned]`
 - [ ] HubSpot Private App API configuration.
@@ -50,10 +50,10 @@ To maintain absolute clarity regarding project status, milestones are labeled us
 - [ ] Existing contact resolution: append new inquiry activity to existing contact thread instead of spawning duplicates.
 - [ ] Existing customer detection (suppress marketing outreach if prospect is an existing active client).
 
-### Milestone 0.6 — Automated Evaluation Harness `[Planned]`
-- [ ] Automated evaluation runner CLI script (`scripts/run-evaluation`).
-- [ ] Ground-truth oracle assertions in `evaluation/expected/`.
-- [ ] Automated benchmark report generation (`evaluation/reports/`) tracking extraction precision, recall, and scoring drift.
+### Milestone 0.6 — Automated Evaluation Harness `[Completed]`
+- [x] Automated evaluation runner CLI script (`scripts/run_evaluation.py`).
+- [x] Ground-truth oracle assertions in `evaluation/expected/ground-truth.json`.
+- [x] Automated benchmark report generation (`evaluation/reports/latest-benchmark.md`) tracking extraction precision, recall, and scoring drift.
 
 ---
 

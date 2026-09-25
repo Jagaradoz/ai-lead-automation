@@ -61,5 +61,5 @@ Canonical Lead Payload (HTTP POST / Sub-Workflow Call)
 
 ## Implementation Status
 
-- **Status**: [Planned - Milestone 0.1]
-- **Artifacts**: Workflow JSON export will be committed here upon completion of Milestone 0.1.
+- **Status**: [Completed - Milestone 0.1]
+- **Artifacts**: Importable n8n workflow pipeline is available in [workflow.json](workflow.json). Includes schema validation, OpenAI fact extraction, deterministic scoring engine, priority router, HubSpot CRM sync, and Slack alert dispatcher.
