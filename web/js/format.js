@@ -7,6 +7,14 @@ export const PRIORITY_LABELS = {
   disqualified: "Disqualified",
 };
 
+// Chart marks per priority (validated for colour-blind separation; always shown with labels).
+export const PRIORITY_COLORS = {
+  high: "#c2410c",
+  medium: "#e0a50a",
+  low: "#3b82c4",
+  disqualified: "#a39c8c",
+};
+
 export const STATUS_LABELS = {
   new: "New",
   contacted: "Contacted",

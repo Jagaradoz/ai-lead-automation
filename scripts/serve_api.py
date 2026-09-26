@@ -30,6 +30,7 @@ from fastapi.staticfiles import StaticFiles
 
 from scripts.api.deps import get_settings_store
 from scripts.api.leads import router as leads_router
+from scripts.api.insights import router as insights_router
 from scripts.api.settings import router as settings_router
 from scripts.llm.settings_store import SettingsStore
 from scripts.paths import WEB_DIR
@@ -97,6 +98,9 @@ async def guard_and_secure(request: Request, call_next):
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["Referrer-Policy"] = "same-origin"
     response.headers["X-Frame-Options"] = "DENY"
+    if not request.url.path.startswith("/api/"):
+        # Static UI files: always revalidate (ETag) so UI edits show on a normal refresh.
+        response.headers.setdefault("Cache-Control", "no-cache")
     if not request.url.path.startswith(_DOCS_PATHS):
         response.headers["Content-Security-Policy"] = CONTENT_SECURITY_POLICY
     return response
@@ -126,6 +130,7 @@ def get_samples():
 
 app.include_router(leads_router)
 app.include_router(settings_router)
+app.include_router(insights_router)
 
 if WEB_DIR.exists():
     app.mount("/", StaticFiles(directory=WEB_DIR, html=True), name="web")

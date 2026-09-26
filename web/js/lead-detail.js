@@ -1,6 +1,7 @@
 // Lead detail: why it scored the way it did, what they wrote, what was extracted, and actions.
 
 import { leadsApi } from "./api.js";
+import { pointsBar, scoreGauge } from "./charts.js";
 import { h, icon, replace, toast, withBusy } from "./dom.js";
 import {
   DIMENSION_LABELS, PRIORITY_LABELS, SOURCE_LABELS, STATUS_LABELS, TIER_LABELS,
@@ -21,17 +22,18 @@ function tally(score) {
       h("span", { class: "tally-name" }, DIMENSION_LABELS[e.dimension] || humanize(e.dimension)),
       h("span", { class: "tally-pts" }, h("b", null, e.points_awarded), h("span", null, ` / ${e.max_possible}`)),
       h("span", { class: "tally-reason" }, e.reason),
+      pointsBar(e.points_awarded, e.max_possible),
     ),
   );
-  return h("section", { class: `p-${priority}`, "aria-labelledby": "tally-title" },
+  return h("section", { class: `card p-${priority}`, "aria-labelledby": "tally-title" },
     h("h2", { class: "section-title", id: "tally-title" }, "Why it scored this way"),
-    h("div", { class: "tally" }, rows, h("div", { class: "tally-total" },
-      h("span", { class: "tally-total-label" },
-        h("b", null, "Total"),
-        h("span", null, "Priority: ", h("span", { class: "priority-word" }, PRIORITY_LABELS[priority])),
+    h("div", { class: "score-layout" },
+      h("div", { class: "score-summary" },
+        scoreGauge(score.total_score, PRIORITY_LABELS[priority]),
+        h("span", { class: "priority-pill" }, `${PRIORITY_LABELS[priority]} priority`),
       ),
-      h("span", { class: "tally-total-score" }, score.total_score),
-    )),
+      h("div", { class: "tally" }, rows),
+    ),
   );
 }
 
@@ -42,6 +44,44 @@ function reviewNotice(score) {
     h("strong", null, "Check before replying"),
     h("ul", null, (score.human_review_reasons || []).map((r) => h("li", null, r))),
   );
+}
+
+function respondText(minutes) {
+  if (minutes === null || minutes === undefined) return "No reply needed";
+  if (minutes < 60 * 24) return `Reply within ${Math.round(minutes / 60)} h`;
+  return `Reply within ${Math.round(minutes / (60 * 24))} days`;
+}
+
+function followupCard(id) {
+  const body = h("div", { class: "followup-body" }, h("p", { class: "muted" }, "Preparing next step…"));
+  leadsApi.followup(id).then(({ route, reply }) => {
+    const routeRow = h("div", { class: "route" },
+      h("div", null, h("span", { class: "route-label" }, "Owner"), h("b", null, route.owner)),
+      h("div", null, h("span", { class: "route-label" }, "Next step"), h("b", null, route.action)),
+      h("div", null, h("span", { class: "route-label" }, "Target"), h("b", null, respondText(route.respond_within_min))),
+    );
+    if (!reply) {
+      replace(body, routeRow, h("p", { class: "muted" }, "No automatic reply for disqualified leads."));
+      return;
+    }
+    const area = h("textarea", { rows: 9, "aria-label": "Reply draft", lang: reply.language });
+    area.value = reply.body;
+    const copy = h("button", { type: "button", class: "btn btn-small btn-primary" }, "Copy reply");
+    copy.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(area.value);
+        toast("Reply copied.");
+      } catch {
+        area.select();
+        toast("Press Ctrl+C to copy.");
+      }
+    });
+    replace(body, routeRow,
+      h("div", { class: "reply-head" }, h("span", { class: "route-label" }, `Draft reply · ${reply.subject}`), copy),
+      area,
+    );
+  }).catch((err) => replace(body, h("p", { class: "muted" }, `Couldn't prepare a next step: ${err.message}`)));
+  return h("section", { class: "card followup" }, h("h2", { class: "section-title" }, "Next step"), body);
 }
 
 function engineNote(meta) {
@@ -85,7 +125,7 @@ function notesForm(record, onSaved) {
   area.value = record.notes || "";
   const save = h("button", { type: "submit", class: "btn btn-small" }, "Save notes");
   return h("form", {
-    class: "notes-form",
+    class: "card notes-form",
     onsubmit: async (e) => {
       e.preventDefault();
       await withBusy(save, "Saving…", async () => {
@@ -175,19 +215,21 @@ export async function renderDetail(pane, id, { onChange }) {
   replace(pane, h("article", { class: "detail" },
     h("a", { class: "btn btn-quiet btn-small back-link", href: "#/inbox" }, icon("back"), "All leads"),
     h("header", { class: "detail-head" },
-      h("h1", { class: "detail-title" }, contact.name || "Unnamed lead"),
+      h("h1", { class: "detail-title" }, contact.name || "Unnamed lead",
+        meta && meta.demo ? h("span", { class: "tag", title: "Generated demo data" }, "Demo") : null),
       h("p", { class: "detail-sub" }, subParts.join(", ")),
       h("p", { class: "detail-summary" }, analysis.summary || ""),
       actions(record, rerender, onChange),
     ),
     reviewNotice(score),
+    followupCard(id),
     tally(score),
-    h("section", null,
+    h("section", { class: "card" },
       h("h2", { class: "section-title" }, "What they wrote"),
       h("div", { class: "message", lang: analysis.language || undefined }, lead.message || ""),
       contactLine(contact),
     ),
-    h("section", null, h("h2", { class: "section-title" }, "What was extracted"), facts(analysis), engineNote(meta)),
+    h("section", { class: "card" }, h("h2", { class: "section-title" }, "What was extracted"), facts(analysis), engineNote(meta)),
     notesForm(record, onChange),
   ));
   pane.scrollTop = 0;

@@ -276,7 +276,31 @@ curl -X POST http://localhost:8000/api/leads/process \
 
 The endpoint accepts website form, LINE webhook, Facebook Lead Ads and canonical payloads. Full API docs are at `/docs`.
 
-### 5. Run the quality suites
+### 5. Dashboard, next steps and demo data
+
+- **Dashboard** (`#/dashboard`): leads per day, priority mix, volume and win rate per channel, pipeline by status, median analysis time.
+- **Next step** on every lead: owner, response target and a first reply drafted in the customer's language (Thai or English), asking only for details that are missing. Disqualified leads get no automatic reply.
+- **Demo data**: fill the inbox with 24 realistic Thai/English leads spread over two weeks, run through the real pipeline and tagged *Demo*. Sales outcomes (won/lost) are simulated so the charts have data.
+
+```bash
+python -m scripts.seed_demo_leads            # built-in scenarios
+python -m scripts.seed_demo_leads --llm 20   # plus 20 written by your configured model
+python -m scripts.seed_demo_leads --clear    # remove demo leads only
+```
+
+### 6. Model page: evidence the scoring works
+
+The **Model** page (`#/model`) shows two evaluations:
+
+1. The message pipeline against 10 hand-labeled enquiries (extraction, priority, safety flags).
+2. A conversion model trained on a real public dataset: [X Education lead scoring](https://www.kaggle.com/datasets/amritachatterjee09/lead-scoring-dataset), 9,240 leads with a converted/not-converted outcome. Logistic regression and gradient boosting are compared with a baseline that always guesses "no" on 2,310 held-out leads. The page shows ROC, confusion matrix, calibration, feature importance and lift. For example, the top 20% of scored leads convert at 82%, against 39% on average.
+
+```bash
+pip install -r requirements-ml.txt
+python -m scripts.train_conversion_model     # downloads the CSV to data/, writes evaluation/models/conversion-model.json
+```
+
+### 7. Run the quality suites
 
 ```bash
 python main.py --test   # unit + API tests (includes the 10-lead benchmark)

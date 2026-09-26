@@ -54,6 +54,7 @@ export const leadsApi = {
   rescore: (id) => api(`/api/leads/${id}/rescore`, { method: "POST" }),
   rescoreAll: () => api("/api/leads/rescore-all", { method: "POST" }),
   reanalyze: (id) => api(`/api/leads/${id}/reanalyze`, { method: "POST" }),
+  followup: (id) => api(`/api/leads/${id}/followup`),
   samples: () => api("/api/samples"),
 };
 
@@ -67,4 +68,9 @@ export const settingsApi = {
   profile: () => api("/api/settings/profile"),
   saveProfile: (body) => api("/api/settings/profile", { method: "PUT", body }),
   resetProfile: () => api("/api/settings/profile/reset", { method: "POST" }),
+};
+
+export const insightsApi = {
+  stats: (days) => api(`/api/stats?${new URLSearchParams({ days })}`),
+  modelReport: () => api("/api/model/report"),
 };

@@ -15,6 +15,7 @@ from pydantic import BaseModel, Field
 from scripts.ai_extractor import ModelUnavailableError, run_analysis
 from scripts.api.deps import get_lead_store, get_profile_store, get_settings_store
 from scripts.business_profile import ProfileStore
+from scripts.followup import build_followup
 from scripts.dispatch import build_hubspot_payload, build_slack_alert, run_live_sync
 from scripts.lead_store import MAX_NOTES_CHARS, PRIORITIES, STATUSES, LeadStore
 from scripts.llm.settings_store import SettingsStore
@@ -177,6 +178,17 @@ def rescore_lead(
     record = _get_or_404(lead_store, lead_id)
     score = score_lead(record["lead"], record["analysis"], profile_store.load())
     return lead_store.replace_result(lead_id, record["analysis"], score, record["meta"])
+
+
+@router.get("/{lead_id}/followup")
+def lead_followup(
+    lead_id: int,
+    profile_store: ProfileStore = Depends(get_profile_store),
+    lead_store: LeadStore = Depends(get_lead_store),
+):
+    """Owner, response target and a first reply draft for this lead."""
+    record = _get_or_404(lead_store, lead_id)
+    return build_followup(record["lead"], record["analysis"], record["score"], profile_store.load())
 
 
 @router.post("/{lead_id}/reanalyze")

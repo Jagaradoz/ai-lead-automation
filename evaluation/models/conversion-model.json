@@ -1,0 +1,536 @@
+{
+  "generated_at": "2026-09-26T07:15:18+00:00",
+  "dataset": {
+    "name": "X Education lead scoring (Kaggle)",
+    "rows": 9240,
+    "train_rows": 6930,
+    "test_rows": 2310,
+    "conversion_rate": 0.3854,
+    "features": [
+      "TotalVisits",
+      "Total Time Spent on Website",
+      "Page Views Per Visit",
+      "Lead Source",
+      "Last Activity"
+    ]
+  },
+  "threshold": 0.5,
+  "best_model": "gradient_boosting",
+  "models": [
+    {
+      "key": "baseline",
+      "label": "Always guess 'not converted'",
+      "accuracy": 0.6147,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "roc_auc": 0.5,
+      "confusion": {
+        "tn": 1420,
+        "fp": 0,
+        "fn": 890,
+        "tp": 0
+      }
+    },
+    {
+      "key": "logistic_regression",
+      "label": "Logistic regression",
+      "accuracy": 0.7931,
+      "precision": 0.7556,
+      "recall": 0.6843,
+      "f1": 0.7182,
+      "roc_auc": 0.8426,
+      "confusion": {
+        "tn": 1223,
+        "fp": 197,
+        "fn": 281,
+        "tp": 609
+      }
+    },
+    {
+      "key": "gradient_boosting",
+      "label": "Gradient boosting",
+      "accuracy": 0.7948,
+      "precision": 0.7369,
+      "recall": 0.727,
+      "f1": 0.7319,
+      "roc_auc": 0.8454,
+      "confusion": {
+        "tn": 1189,
+        "fp": 231,
+        "fn": 243,
+        "tp": 647
+      }
+    }
+  ],
+  "roc": {
+    "logistic_regression": [
+      {
+        "fpr": 0.0,
+        "tpr": 0.0
+      },
+      {
+        "fpr": 0.0113,
+        "tpr": 0.1056
+      },
+      {
+        "fpr": 0.0169,
+        "tpr": 0.1438
+      },
+      {
+        "fpr": 0.0232,
+        "tpr": 0.1966
+      },
+      {
+        "fpr": 0.0303,
+        "tpr": 0.2663
+      },
+      {
+        "fpr": 0.038,
+        "tpr": 0.2899
+      },
+      {
+        "fpr": 0.0444,
+        "tpr": 0.3247
+      },
+      {
+        "fpr": 0.0514,
+        "tpr": 0.3461
+      },
+      {
+        "fpr": 0.0613,
+        "tpr": 0.3753
+      },
+      {
+        "fpr": 0.0683,
+        "tpr": 0.4157
+      },
+      {
+        "fpr": 0.0739,
+        "tpr": 0.4539
+      },
+      {
+        "fpr": 0.081,
+        "tpr": 0.491
+      },
+      {
+        "fpr": 0.0894,
+        "tpr": 0.5191
+      },
+      {
+        "fpr": 0.0979,
+        "tpr": 0.5348
+      },
+      {
+        "fpr": 0.1063,
+        "tpr": 0.5607
+      },
+      {
+        "fpr": 0.1141,
+        "tpr": 0.5888
+      },
+      {
+        "fpr": 0.1352,
+        "tpr": 0.6697
+      },
+      {
+        "fpr": 0.1444,
+        "tpr": 0.691
+      },
+      {
+        "fpr": 0.1535,
+        "tpr": 0.7034
+      },
+      {
+        "fpr": 0.1676,
+        "tpr": 0.7213
+      },
+      {
+        "fpr": 0.1782,
+        "tpr": 0.736
+      },
+      {
+        "fpr": 0.193,
+        "tpr": 0.7506
+      },
+      {
+        "fpr": 0.2169,
+        "tpr": 0.7674
+      },
+      {
+        "fpr": 0.238,
+        "tpr": 0.7809
+      },
+      {
+        "fpr": 0.25,
+        "tpr": 0.7955
+      },
+      {
+        "fpr": 0.2662,
+        "tpr": 0.8067
+      },
+      {
+        "fpr": 0.2775,
+        "tpr": 0.8225
+      },
+      {
+        "fpr": 0.3063,
+        "tpr": 0.836
+      },
+      {
+        "fpr": 0.3937,
+        "tpr": 0.8854
+      },
+      {
+        "fpr": 0.4197,
+        "tpr": 0.8966
+      },
+      {
+        "fpr": 0.4408,
+        "tpr": 0.9067
+      },
+      {
+        "fpr": 0.4746,
+        "tpr": 0.9157
+      },
+      {
+        "fpr": 0.512,
+        "tpr": 0.9236
+      },
+      {
+        "fpr": 0.5507,
+        "tpr": 0.9337
+      },
+      {
+        "fpr": 0.5845,
+        "tpr": 0.9472
+      },
+      {
+        "fpr": 0.638,
+        "tpr": 0.9573
+      },
+      {
+        "fpr": 0.6556,
+        "tpr": 0.964
+      },
+      {
+        "fpr": 0.7289,
+        "tpr": 0.973
+      },
+      {
+        "fpr": 0.9092,
+        "tpr": 0.991
+      },
+      {
+        "fpr": 1.0,
+        "tpr": 1.0
+      }
+    ],
+    "gradient_boosting": [
+      {
+        "fpr": 0.0,
+        "tpr": 0.0
+      },
+      {
+        "fpr": 0.0085,
+        "tpr": 0.0663
+      },
+      {
+        "fpr": 0.0169,
+        "tpr": 0.1787
+      },
+      {
+        "fpr": 0.0254,
+        "tpr": 0.2539
+      },
+      {
+        "fpr": 0.0338,
+        "tpr": 0.2899
+      },
+      {
+        "fpr": 0.0408,
+        "tpr": 0.3135
+      },
+      {
+        "fpr": 0.0465,
+        "tpr": 0.3596
+      },
+      {
+        "fpr": 0.0528,
+        "tpr": 0.4101
+      },
+      {
+        "fpr": 0.0599,
+        "tpr": 0.4416
+      },
+      {
+        "fpr": 0.0732,
+        "tpr": 0.464
+      },
+      {
+        "fpr": 0.0944,
+        "tpr": 0.5517
+      },
+      {
+        "fpr": 0.1035,
+        "tpr": 0.5787
+      },
+      {
+        "fpr": 0.1106,
+        "tpr": 0.6067
+      },
+      {
+        "fpr": 0.1197,
+        "tpr": 0.6258
+      },
+      {
+        "fpr": 0.1282,
+        "tpr": 0.6449
+      },
+      {
+        "fpr": 0.1394,
+        "tpr": 0.6764
+      },
+      {
+        "fpr": 0.1479,
+        "tpr": 0.6955
+      },
+      {
+        "fpr": 0.1549,
+        "tpr": 0.7146
+      },
+      {
+        "fpr": 0.1697,
+        "tpr": 0.7326
+      },
+      {
+        "fpr": 0.1803,
+        "tpr": 0.7483
+      },
+      {
+        "fpr": 0.193,
+        "tpr": 0.7618
+      },
+      {
+        "fpr": 0.212,
+        "tpr": 0.7775
+      },
+      {
+        "fpr": 0.2232,
+        "tpr": 0.7899
+      },
+      {
+        "fpr": 0.2359,
+        "tpr": 0.8045
+      },
+      {
+        "fpr": 0.2493,
+        "tpr": 0.8169
+      },
+      {
+        "fpr": 0.3359,
+        "tpr": 0.8674
+      },
+      {
+        "fpr": 0.3472,
+        "tpr": 0.8798
+      },
+      {
+        "fpr": 0.388,
+        "tpr": 0.8899
+      },
+      {
+        "fpr": 0.4211,
+        "tpr": 0.8989
+      },
+      {
+        "fpr": 0.4514,
+        "tpr": 0.9056
+      },
+      {
+        "fpr": 0.481,
+        "tpr": 0.9146
+      },
+      {
+        "fpr": 0.5183,
+        "tpr": 0.9247
+      },
+      {
+        "fpr": 0.5866,
+        "tpr": 0.9326
+      },
+      {
+        "fpr": 0.6134,
+        "tpr": 0.9427
+      },
+      {
+        "fpr": 0.6585,
+        "tpr": 0.9494
+      },
+      {
+        "fpr": 0.7007,
+        "tpr": 0.9573
+      },
+      {
+        "fpr": 0.7338,
+        "tpr": 0.9663
+      },
+      {
+        "fpr": 0.7796,
+        "tpr": 0.9787
+      },
+      {
+        "fpr": 0.938,
+        "tpr": 0.9933
+      },
+      {
+        "fpr": 1.0,
+        "tpr": 1.0
+      }
+    ]
+  },
+  "calibration": [
+    {
+      "predicted": 0.0432,
+      "actual": 0.0934,
+      "count": 696
+    },
+    {
+      "predicted": 0.1384,
+      "actual": 0.1212,
+      "count": 264
+    },
+    {
+      "predicted": 0.2591,
+      "actual": 0.2526,
+      "count": 285
+    },
+    {
+      "predicted": 0.3519,
+      "actual": 0.3776,
+      "count": 98
+    },
+    {
+      "predicted": 0.4535,
+      "actual": 0.4157,
+      "count": 89
+    },
+    {
+      "predicted": 0.5592,
+      "actual": 0.6139,
+      "count": 101
+    },
+    {
+      "predicted": 0.6512,
+      "actual": 0.6071,
+      "count": 140
+    },
+    {
+      "predicted": 0.7353,
+      "actual": 0.7009,
+      "count": 214
+    },
+    {
+      "predicted": 0.8492,
+      "actual": 0.7702,
+      "count": 161
+    },
+    {
+      "predicted": 0.9425,
+      "actual": 0.8626,
+      "count": 262
+    }
+  ],
+  "lift": [
+    {
+      "top_share": 0.1,
+      "conversions_captured": 0.2225,
+      "conversion_rate": 0.8571
+    },
+    {
+      "top_share": 0.2,
+      "conversions_captured": 0.4258,
+      "conversion_rate": 0.8203
+    },
+    {
+      "top_share": 0.3,
+      "conversions_captured": 0.6045,
+      "conversion_rate": 0.7763
+    },
+    {
+      "top_share": 0.5,
+      "conversions_captured": 0.8337,
+      "conversion_rate": 0.6424
+    }
+  ],
+  "feature_importance": [
+    {
+      "feature": "Total Time Spent on Website",
+      "importance": 0.1591
+    },
+    {
+      "feature": "Last Activity",
+      "importance": 0.087
+    },
+    {
+      "feature": "Lead Source",
+      "importance": 0.0502
+    },
+    {
+      "feature": "Page Views Per Visit",
+      "importance": 0.0209
+    },
+    {
+      "feature": "TotalVisits",
+      "importance": 0.0113
+    }
+  ],
+  "conversion_by_source": [
+    {
+      "value": "Google",
+      "leads": 2868,
+      "conversion_rate": 0.3999
+    },
+    {
+      "value": "Direct Traffic",
+      "leads": 2543,
+      "conversion_rate": 0.3217
+    },
+    {
+      "value": "Olark Chat",
+      "leads": 1755,
+      "conversion_rate": 0.2553
+    },
+    {
+      "value": "Organic Search",
+      "leads": 1154,
+      "conversion_rate": 0.3778
+    },
+    {
+      "value": "Reference",
+      "leads": 534,
+      "conversion_rate": 0.9176
+    },
+    {
+      "value": "Welingak Website",
+      "leads": 142,
+      "conversion_rate": 0.9859
+    },
+    {
+      "value": "Referral Sites",
+      "leads": 125,
+      "conversion_rate": 0.248
+    },
+    {
+      "value": "Facebook",
+      "leads": 55,
+      "conversion_rate": 0.2364
+    }
+  ],
+  "message_benchmark": {
+    "total": 10,
+    "extraction_accuracy": 100.0,
+    "scoring_accuracy": 100.0,
+    "safety_accuracy": 100.0
+  }
+}

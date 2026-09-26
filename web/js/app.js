@@ -1,10 +1,12 @@
 // Entry point: hash router, engine status chip, and the New lead sheet.
 
 import { settingsApi } from "./api.js";
+import { renderDashboard } from "./dashboard.js";
 import { refreshInbox, renderInbox } from "./inbox.js";
 import { initNewLead } from "./new-lead.js";
 import { renderModelSettings } from "./settings-model.js";
 import { renderProfileSettings } from "./settings-profile.js";
+import { renderTrust } from "./trust.js";
 
 const main = document.getElementById("main");
 
@@ -33,7 +35,13 @@ function route() {
   const hash = location.hash || "#/inbox";
   const leadMatch = hash.match(/^#\/lead\/(\d+)$/);
 
-  if (hash === "#/settings/model") {
+  if (hash === "#/dashboard") {
+    setActiveNav("dashboard");
+    renderDashboard(main);
+  } else if (hash === "#/model") {
+    setActiveNav("model");
+    renderTrust(main);
+  } else if (hash === "#/settings/model") {
     setActiveNav("settings");
     renderModelSettings(main);
   } else if (hash === "#/settings/profile") {
